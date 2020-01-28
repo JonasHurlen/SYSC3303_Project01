@@ -1,24 +1,34 @@
 import java.io.*;
 public class FloorSubsystem implements Runnable{
+		
+	private void run(){
+		
+	}
 	
-	/**
-	 * 
-	 */
-	private void readInputs() {
-		String inputFile = "/";
+	public static void main(String[] args) {
+		String csvFile = "";
+		BufferedReader buffreader=null;
+		String cvsSplitby =",";
+		
+		
 		try{
+			
+			buffreader= new BufferedReader(new FileReader(csvFile));
+			while() {
+				
+			}
+			
 			
 			
 		}
-		catch{
+		catch(FileNotFoundException e){
+			e.printStackTrace();
 			
 		}
 		finally{
 			
 		}
 	}
-	
-	private void run(){
 		
 	}
 
