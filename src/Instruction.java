@@ -1,6 +1,6 @@
 import java.sql.Timestamp;
 
-public class instruction {
+public class Instruction {
 	Timestamp timestamp = new Timestamp(0);
 	private int floor;//floor instruction originated from
 	private int floorBut;//direction of travel (0 is down, 1 is up)
@@ -9,7 +9,7 @@ public class instruction {
 	private int type = 0;//Flag for current instruction interpretation (0 is instruction, 1 is movement from button, 2 is movement to floor)
 	private int carNum;//number of the car
 	private int floorOrder;//next position the car should go to
-	instruction(int floor, int floorBut){
+	Instruction(int floor, int floorBut){
 		this.floor = floor;
 		this.floorBut = floorBut;
 	}

@@ -2,10 +2,10 @@ import java.util.LinkedList;
 
 public class Scheduler implements Runnable {
 
-	LinkedList<instruction> inputF = new LinkedList<instruction>();//input from floor
+	LinkedList<Instruction> inputF = new LinkedList<Instruction>();//input from floor
 	// LinkedList<instruction> outputF = new LinkedList<instruction>();
-	LinkedList<instruction> inputE = new LinkedList<instruction>();//input from elevator
-	LinkedList<instruction> outputE = new LinkedList<instruction>();//output to elevator
+	LinkedList<Instruction> inputE = new LinkedList<Instruction>();//input from elevator
+	LinkedList<Instruction> outputE = new LinkedList<Instruction>();//output to elevator
 
 	@Override
 	public void run() {
@@ -30,7 +30,7 @@ public class Scheduler implements Runnable {
 				if (!this.inputE.isEmpty()) {
 					// Receives complete instruction and then sorts it to an elevator
 					// Stuff to figure out which elevator it goes to
-					instruction order = inputE.pop();
+					Instruction order = inputE.pop();
 					if (order.getCarBut() == -1) {
 						order.setfloorOrder(order.getFloor());
 						order.setType(2);// Turns instruction into order

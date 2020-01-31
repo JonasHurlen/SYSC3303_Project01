@@ -1,15 +1,48 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Elevator implements Runnable {
 	Scheduler scheduler = new Scheduler();
 	int carNum;//Car number
 	int currFloor;//Floor the elevator is on currently
 	int button;//the button of the desired floor
-	LinkedList<instruction> orders = new LinkedList<instruction>();
+	LinkedList<Instruction> orders = new LinkedList<Instruction>();
 
 	Elevator(Scheduler scheduler, int carNum) {
 		this.scheduler = scheduler;
 		this.carNum = carNum;
+	}
+	
+	public int readInputFile(String filename) {
+		Integer myInt = null;
+		List<String>inputData = new ArrayList<String>();
+        try {
+        	Scanner scanner = new Scanner(new File(filename));
+ 	        scanner.useDelimiter(","); //sets the delimiter pattern
+ 	        
+ 	        while(scanner.hasNext()) {
+ 	        	String x=scanner.next();
+ 	        	inputData.add(x);
+ 	        }
+ 	        scanner.close();
+ 	        String[] myArray = inputData.toArray(new String[0]);  
+ 	        for (String s: myArray) {
+ 	        	System.out.println(s);
+ 	        }
+ 	         myInt =  Integer.parseInt(myArray[3]);
+ 	        
+        }
+        catch(FileNotFoundException e) {
+        	e.printStackTrace();
+        	
+        	 }
+        finally {
+        	return myInt;
+        }
 	}
 
 	public void run() {
@@ -26,7 +59,7 @@ public class Elevator implements Runnable {
 				}
 				//if there is something in the incoming instructions
 				if (!scheduler.outputE.isEmpty()) {
-					instruction order = scheduler.outputE.pop();
+					Instruction order = scheduler.outputE.pop();
 					//if the instruction is of type 0 return the values from the elevator
 					if (order.getType() == 0) {
 						order.setCarCur(currFloor);
@@ -46,7 +79,7 @@ public class Elevator implements Runnable {
 				//if the elevator has orders
 				if (!orders.isEmpty()) {
 					if (orders.peek().getCarNum() == carNum) {
-						instruction currOrder = orders.pop();
+						Instruction currOrder = orders.pop();
 						switch (currOrder.getType()) {
 						//Orders from a button
 						case (1):

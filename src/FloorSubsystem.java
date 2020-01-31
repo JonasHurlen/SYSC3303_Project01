@@ -35,8 +35,8 @@ public class FloorSubsystem implements Runnable{
 	 * @param filename
 	 */
 	
-	public void readInputFile(String filename) {
-		
+	public Instruction readInputFile(String filename) {
+		Instruction instruction = null;
 		List<String>inputData = new ArrayList<String>();
         try {
         	Scanner scanner = new Scanner(new File(filename));
@@ -51,11 +51,16 @@ public class FloorSubsystem implements Runnable{
  	        for (String s: myArray) {
  	        	System.out.println(s);
  	        }
+ 	         instruction = new Instruction(Integer.parseInt(myArray[1]), Integer.parseInt(myArray[2]));
+ 	        
         }
         catch(FileNotFoundException e) {
         	e.printStackTrace();
         	
         	 }
+        finally {
+        	return instruction;
+        }
 	}
 
 	
