@@ -2,7 +2,9 @@ import java.io.*;
 import java.util.*;
 public class FloorSubsystem implements Runnable{
 		
-	private void run(){
+	private String[] myArray;
+	
+	public void run(){
 		
 	}
 	/**
@@ -34,7 +36,7 @@ public class FloorSubsystem implements Runnable{
 		
 		List<String>inputData = new ArrayList<String>();
 	        try {
-	        	Scanner scanner = new Scanner(new File("C:/Users/abdel/Onedrive/Desktop/inputFile.csv"));
+	        	Scanner scanner = new Scanner(new File("inputFile.csv"));
 	 	        scanner.useDelimiter(","); //sets the delimiter pattern
 	 	        
 	 	        while(scanner.hasNext()) {
