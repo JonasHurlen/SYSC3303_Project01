@@ -2,10 +2,10 @@ import java.util.LinkedList;
 
 public class Scheduler implements Runnable {
 
-	LinkedList<instruction> inputF = new LinkedList<instruction>();
+	LinkedList<instruction> inputF = new LinkedList<instruction>();//input from floor
 	// LinkedList<instruction> outputF = new LinkedList<instruction>();
-	LinkedList<instruction> inputE = new LinkedList<instruction>();
-	LinkedList<instruction> outputE = new LinkedList<instruction>();
+	LinkedList<instruction> inputE = new LinkedList<instruction>();//input from elevator
+	LinkedList<instruction> outputE = new LinkedList<instruction>();//output to elevator
 
 	@Override
 	public void run() {
