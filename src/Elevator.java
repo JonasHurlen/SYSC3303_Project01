@@ -30,9 +30,7 @@ public class Elevator implements Runnable {
  	        }
  	        scanner.close();
  	        String[] myArray = inputData.toArray(new String[0]);  
- 	        for (String s: myArray) {
- 	        	System.out.println(s);
- 	        }
+
  	         myInt =  Integer.parseInt(myArray[3]);
  	        
         }
@@ -66,7 +64,7 @@ public class Elevator implements Runnable {
 						order.setCarNum(carNum);
 						//if the elevator is on the same floor as the calling floor the button can be pressed
 						if (order.getFloor() == currFloor) {
-							order.setCarBut(button);
+							order.setCarBut(readInputFile("inputFile.csv"));
 						} else {
 							order.setCarBut(-1);
 						}
@@ -86,6 +84,7 @@ public class Elevator implements Runnable {
 							System.out.println("Elevator " + currOrder.getCarNum() + " is going to floor "
 									+ currOrder.getfloorOrder());
 							currFloor = currOrder.getfloorOrder();
+							scheduler.acknowledged.add(currOrder);
 							break;
 
 						//Moving to the button call
@@ -94,7 +93,7 @@ public class Elevator implements Runnable {
 									+ currOrder.getfloorOrder() + ", now waiting for button");
 							currFloor = currOrder.getfloorOrder();
 							currOrder.setCarCur(currFloor);
-							currOrder.setCarBut(button);
+							currOrder.setCarBut(readInputFile("inputFile.csv"));
 							currOrder.setType(0);
 							scheduler.inputE.add(currOrder);
 							break;

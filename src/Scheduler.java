@@ -6,6 +6,7 @@ public class Scheduler implements Runnable {
 	// LinkedList<instruction> outputF = new LinkedList<instruction>();
 	LinkedList<Instruction> inputE = new LinkedList<Instruction>();//input from elevator
 	LinkedList<Instruction> outputE = new LinkedList<Instruction>();//output to elevator
+	LinkedList<Instruction> acknowledged = new LinkedList<Instruction>();//output to floor
 
 	@Override
 	public void run() {
@@ -43,6 +44,7 @@ public class Scheduler implements Runnable {
 					
 				}
 				this.notifyAll();
+				
 				/*
 				 * if(!this.inputE.isEmpty()) { //Receives complete instruction and then sorts
 				 * it to an elevator //Stuff to figure out which elevator it goes to instruction

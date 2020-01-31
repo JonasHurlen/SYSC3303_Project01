@@ -4,8 +4,8 @@ public class Start {
 		
 		Scheduler scheduler = new Scheduler();
 
-		FloorSubsystem myFloor = new FloorSubsystem();
-		Instruction fromFloor = myFloor.readInputFile("inputFile.csv");
+		FloorSubsystem myFloor = new FloorSubsystem(scheduler, 2);
+		Instruction inst = myFloor.readInputFile("inputFile.csv");
 		
 		
 		Elevator elevator1 = new Elevator(scheduler,1);
@@ -13,15 +13,17 @@ public class Start {
 
 		elevator1.currFloor = 8; // where the elevator is located
 		//temp until FloorSub is integrated
-		scheduler.inputF.add(fromFloor);
-		elevator1.button = elevator1.readInputFile("inputFile.csv"); // final destination
+		scheduler.inputF.add(inst);
+		//elevator1.button = elevator1.readInputFile("inputFile.csv"); // final destination
 		
 		Thread tElevator1 = new Thread(elevator1);
 		Thread tScheduler = new Thread(scheduler);
+		Thread tFloor = new Thread(myFloor);
 		
 		
 		tElevator1.start();
 		tScheduler.start();
+		tFloor.start();
 		
 		
 		/*

@@ -20,7 +20,7 @@ class testSystem {
 		Elevator myElevator2 = new Elevator(myScheduler, 2);
 		Elevator myElevator3 = new Elevator(myScheduler, 3);
 		Elevator myElevator4 = new Elevator(myScheduler, 4);
-		FloorSubsystem myFloorSubsystem = new FloorSubsystem();
+		//FloorSubsystem myFloorSubsystem = new FloorSubsystem();
 		
 		
 	}
