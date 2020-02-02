@@ -34,32 +34,7 @@ public class FloorSubsystem implements Runnable {
 		this.scheduler = scheduler;
 		this.floorNumber = floorNumber;
 	}
-
-	/**
-	 * TimeStamp Method
-	 * 
-	 * @return Returns the at which the elevator what called/pressed
-	 */
-	private String TimeStamp() {
-		return myArray[0];
-	}
-
-	/**
-	 * 
-	 * @returns Floor number
-	 */
-	private String FloorNumber() {
-		return myArray[1];
-	}
-
-	private String UpOrDown() {
-		return myArray[2];
-	}
-
-	private String ButtonPressed() {
-		return myArray[3];
-	}
-
+	
 	/**
 	 * 
 	 * @param filename
