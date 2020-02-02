@@ -22,7 +22,7 @@ Included Files
 	
 Credits & Contributions
 	Khalil Aalab
-	Abdelrahman Darwish
+	Abdelrahman Darwish FloorSubsytem thread, readInputFile method()
 	Michael Fairbairn
 	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
 	Krishang Karir
