@@ -1,3 +1,4 @@
+package mainCode;
 
 public class Start {
 	public static void main(String[] args) {
@@ -11,7 +12,7 @@ public class Start {
 		Elevator elevator1 = new Elevator(scheduler,1);
 		//Temp until file to elevator is implemented
 
-		elevator1.currFloor = 8; // where the elevator is located
+		elevator1.setFloor(8); // where the elevator is located
 		//temp until FloorSub is integrated
 		scheduler.inputF.add(inst);
 		//elevator1.button = elevator1.readInputFile("inputFile.csv"); // final destination
