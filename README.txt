@@ -20,9 +20,9 @@ Included Files
 	FloorSubsystem.java- Class representing individual floors. Can send and recieve instructions and read information from the input file
 	inputFile.csv- Contains a instructions for the operation of the simulation
 	
-Credits
+Credits & Contributions
 	Khalil Aalab
 	Abdelrahman Darwish
 	Michael Fairbairn
-	Jonas Hurlen
+	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
 	Krishang Karir
