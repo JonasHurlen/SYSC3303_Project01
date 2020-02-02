@@ -14,15 +14,15 @@ Tests
 	-
 	
 Included Files
-	Start.java- The main class of the program. Instanciates and runs all threads
+	Start.java- The main class of the program. Instantiates and runs all threads
 	Scheduler.java- Allows communication between elevators and floors via instructions
-	Elevator.java- Class representing the elevators. Can send and recieve instructions and read information from the input file
-	FloorSubsystem.java- Class representing individual floors. Can send and recieve instructions and read information from the input file
+	Elevator.java- Class representing the elevators. Can send and receive instructions and read information from the input file
+	FloorSubsystem.java- Class representing individual floors. Can send and receive instructions and read information from the input file
 	inputFile.csv- Contains a instructions for the operation of the simulation
 	
 Credits & Contributions
-	Khalil Aalab
-	Abdelrahman Darwish FloorSubsytem thread, readInputFile method()
-	Michael Fairbairn
+	Khalil Aalab: Setting up work environment, incorporating various members work, notifying Floor from Scheduler via acknowledged LinkedList
+	Abdelrahman Darwish: FloorSubsytem thread, readInputFile method()
+	Michael Fairbairn: 
 	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
-	Krishang Karir
+	Krishang Karir: Constructing class diagram, sequence diagram
