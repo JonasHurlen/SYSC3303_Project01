@@ -23,6 +23,6 @@ Included Files
 Credits & Contributions
 	Khalil Aalab: Setting up work environment, incorporating various members work, notifying Floor from Scheduler via acknowledged LinkedList
 	Abdelrahman Darwish: FloorSubsytem thread, readInputFile method()
-	Michael Fairbairn: 
+	Michael Fairbairn: JUnit Testing, separate packages, general code cleanup
 	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
 	Krishang Karir: Constructing class diagram, sequence diagram
