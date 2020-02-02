@@ -10,7 +10,7 @@ public class Instruction {
 	private int type = 0;//Flag for current instruction interpretation (0 is instruction, 1 is movement from button, 2 is movement to floor)
 	private int carNum;//number of the car
 	private int floorOrder;//next position the car should go to
-	Instruction(int floor, int floorBut){
+	public Instruction(int floor, int floorBut){
 		this.floor = floor;
 		this.floorBut = floorBut;
 	}
