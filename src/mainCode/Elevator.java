@@ -12,6 +12,8 @@ public class Elevator implements Runnable {
 	private int currFloor;//Floor the elevator is on currently
 	private int button;//the button of the desired floor
 	public LinkedList<Instruction> orders = new LinkedList<Instruction>();
+	
+	//
 
 	public Elevator(Scheduler scheduler, int carNum) {
 		this.scheduler = scheduler;
