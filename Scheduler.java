@@ -47,7 +47,7 @@ public class Scheduler implements Runnable {
 					Instruction order = inputE.pop();
 					switch (order.getType()) {
 					case 0:
-						System.out.println("S C0");
+						//System.out.println("S C0");
 						int distance = 999;
 						cars = order.getCarPoll();
 						for (Car car : cars) {
@@ -72,16 +72,19 @@ public class Scheduler implements Runnable {
 							order.setMove(1);
 						}
 						
+						/*
 						if(orders[order.getCarNum()] == null) {
 							orders[order.getCarNum()] = new LinkedList<Instruction>();
 						}
 						orders[order.getCarNum()].add(order);
 						this.transIn.add(order);
-						System.out.println(order.getMove());
+						*/
+						this.outputE.add(order);
+						//System.out.println(order.getMove());
 						break;
 						
 					case 1:
-						System.out.println("S C1");
+						//System.out.println("S C1");
 						int currCar = order.getCarNum();
 						if(orders[currCar] == null) {
 							orders[currCar] = new LinkedList<Instruction>();
@@ -90,7 +93,20 @@ public class Scheduler implements Runnable {
 						orders[currCar].add(order);//fit new destination into schedule
 						break;
 					case 2:
-						System.out.println("Order from car in wrong stream");
+						if(!orders[order.getCarNum()].isEmpty()) {
+							if(order.getCarBut() == order.getCarCur()) {
+								this.acknowledged.add(order);
+							}
+							int next = orders[order.getCarNum()].peek().getCarBut();
+							if(order.getCarCur() < next) {
+								order.setMove(1);
+								this.outputE.add(order);
+							}else if(order.getCarCur() < next) {
+								order.setMove(-1);
+								this.outputE.add(order);
+							}
+						}
+						
 						break;
 						
 					}
@@ -99,7 +115,7 @@ public class Scheduler implements Runnable {
 
 				}
 				
-				
+				/*
 				for(Instruction curr : this.transIn) {
 					cars[curr.getCarNum()].setCurrFloor(curr.getCarCur());
 					if(curr.getCarBut() == curr.getCarCur()) {
@@ -118,6 +134,7 @@ public class Scheduler implements Runnable {
 					
 					
 				}
+				*/
 				this.notifyAll();
 
 			}

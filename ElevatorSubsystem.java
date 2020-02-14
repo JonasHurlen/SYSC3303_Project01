@@ -78,30 +78,33 @@ public class ElevatorSubsystem implements Runnable {
 					
 					switch(order.getType()) {
 						case 0:
-							System.out.println("E C0");
+							//System.out.println("E C0");
 							order.setCarPoll(cars);
 							scheduler.inputE.add(order);
 							break;
 						case 1:
+							//
 							//order.setCarBut(readInputFile("inputFile.csv"));
-							System.out.println("E C1");
-							order.setCarBut(4);
+							//System.out.println("E C1");
+							order.setCarBut(7);//used for testing agnostically to the csv
 							scheduler.inputE.add(order);
 							break;
 						case 2:
-							scheduler.transIn.add(order);
+							scheduler.inputE.add(order);
 							
 					
 
 					}
 					
 				}
+				/*
 				if (!scheduler.transOut.isEmpty()) {
 					Instruction order = scheduler.transOut.pop();
 					cars[order.getCarNum()].setCurrFloor(cars[order.getCarNum()].getCurrFloor() + order.getMove());
 					System.out.println("Car " + order.getCarNum() + " moved to " + cars[order.getCarNum()].getCurrFloor());
 					scheduler.transIn.add(order);
 				}
+				*/
 				scheduler.notifyAll();
 				
 
