@@ -13,6 +13,7 @@ public class ElevatorSubsystem implements Runnable {
 	public Scheduler scheduler;
 	private int numCars;//Car number
 	public Car[] cars;
+	private ElevatorState state;
 
 	public ElevatorSubsystem(Scheduler scheduler, int numCars) {
 		this.scheduler = scheduler;
@@ -23,6 +24,7 @@ public class ElevatorSubsystem implements Runnable {
 			cars[i].setCurrFloor(4);
 			cars[i].setDir(0);
 		}
+		state = ElevatorState.WAITING;
 	}
 	
 	public int getCarNum() {
@@ -69,6 +71,7 @@ public class ElevatorSubsystem implements Runnable {
 				}
 				//if there is something in the incoming instructions
 				if (!scheduler.outputE.isEmpty()) {
+					state = ElevatorState.BUSY;
 					Instruction order = scheduler.outputE.pop();
 					
 					//moves the elevator
@@ -114,6 +117,7 @@ public class ElevatorSubsystem implements Runnable {
 					}
 					
 				}
+				state = ElevatorState.WAITING;
 				scheduler.notifyAll();
 				
 

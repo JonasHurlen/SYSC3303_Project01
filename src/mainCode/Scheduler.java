@@ -10,9 +10,11 @@ public class Scheduler implements Runnable {
 	LinkedList<Instruction> acknowledged = new LinkedList<Instruction>();// output to floor
 	public LinkedList<Instruction>[] orders;
 	private Car[] cars;
+	private SchedulerState state;
 
 	public Scheduler(int numCars, int numFloors) {
 		orders = new LinkedList[numCars];
+		state = SchedulerState.WAITING;
 	}
 
 	@Override
@@ -33,6 +35,8 @@ public class Scheduler implements Runnable {
 				if (!this.inputF.isEmpty()) {
 					// Takes information from floor and sends it through to the elevators to receive
 					// info
+					state = SchedulerState.BUSY;
+					
 					if (inputF.peek().getFloorBut() == 0) {
 						console(inputF.peek().getFloor() + " going down");
 					} else {
@@ -40,12 +44,14 @@ public class Scheduler implements Runnable {
 					}
 
 					outputE.add(inputF.pop());
+					state = SchedulerState.WAITING;
 
 				}
 
 				if (!this.inputE.isEmpty()) {
 					// Receives complete instruction and then sorts it to an elevator
 					// Stuff to figure out which elevator it goes to
+					state = SchedulerState.BUSY;
 					Instruction order = inputE.pop();
 					switch (order.getType()) {
 					case 0:
@@ -75,6 +81,7 @@ public class Scheduler implements Runnable {
 						}
 						console(order.getMove());
 						this.outputE.add(order);
+						
 						break;
 
 					case 1:
@@ -107,8 +114,9 @@ public class Scheduler implements Runnable {
 						break;
 
 					}
-
+					
 				}
+				state = SchedulerState.WAITING;
 				this.notifyAll();
 
 			}

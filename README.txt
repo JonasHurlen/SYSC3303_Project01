@@ -1,6 +1,6 @@
 Elevator Scheduling System
 
-Group 1 Submission for 3303 Project Iteration 1
+Group 1 Submission for 3303 Project Iteration 2
 
 Installation
 	All java files and the .csv file must be included in the same project to ensure proper communication
