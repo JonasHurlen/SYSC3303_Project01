@@ -4,44 +4,44 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import mainCode.Elevator;
+import mainCode.ElevatorSubsystem;
 
-class TestElevator {
-	Elevator elevator;
+class TestElevatorSubsystem {
+	ElevatorSubsystem ElevatorSubsystem;
 	
 	@BeforeEach
 	void setup() {
-		elevator = new Elevator(null, 1);
+		ElevatorSubsystem = new ElevatorSubsystem(null, 1);
 	}
 	
 	@Test
 	void testCarNumber() {
-		assertEquals(elevator.getCarNum(), 1);
+		assertEquals(ElevatorSubsystem.getCarNum(), 1);
 	}
 	
 	@Test
 	void testDefaultFloor() {
-		assertEquals(elevator.getFloor(), 0);
+		assertEquals(ElevatorSubsystem.getFloor(), 0);
 	}
 	
 	@Test
 	void testChangeFloor() {
-		assertEquals(elevator.getFloor(), 0);
+		assertEquals(ElevatorSubsystem.getFloor(), 0);
 		
-		elevator.setFloor(3);
-		assertEquals(elevator.getFloor(), 3);
+		ElevatorSubsystem.setFloor(3);
+		assertEquals(ElevatorSubsystem.getFloor(), 3);
 	}
 	
 	@Test
 	void testDefaultButton() {
-		assertEquals(elevator.getButton(), 0);
+		assertEquals(ElevatorSubsystem.getButton(), 0);
 	}
 	
 	@Test
 	void testChangeButton() {
-		assertEquals(elevator.getButton(), 0);
+		assertEquals(ElevatorSubsystem.getButton(), 0);
 		
-		elevator.setButton(2);
-		assertEquals(elevator.getButton(), 2);
+		ElevatorSubsystem.setButton(2);
+		assertEquals(ElevatorSubsystem.getButton(), 2);
 	}
 }

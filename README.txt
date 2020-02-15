@@ -16,8 +16,10 @@ Tests
 Included Files
 	Start.java- The main class of the program. Instantiates and runs all threads
 	Scheduler.java- Allows communication between elevators and floors via instructions
-	Elevator.java- Class representing the elevators. Can send and receive instructions and read information from the input file
+	ElevatorSubsystem.java- Class representing the elevators. Can send and receive instructions and read information from the input file
+	Car.java- Class used to represent individual elevator cars by the Elevator Subsystem
 	FloorSubsystem.java- Class representing individual floors. Can send and receive instructions and read information from the input file
+	Instruction.java- Class used to transfer information between other classes.
 	inputFile.csv- Contains a instructions for the operation of the simulation
 	Iteration1 Documenation.pdf - contains class diagram and sequence diagram
 	Remaining files - There are 2 draw.io files, and 2 png files as a backup for the diagrams
