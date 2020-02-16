@@ -46,7 +46,7 @@ public class ElevatorSubsystem implements Runnable {
  	        	while (lines.hasNext()) {
  	        		String y = scanner.next();
  	        		inputData.add(y);
- 	        	}
+ 	        	}//co
  	        }
  	        scanner.close();
  	        String[] myArray = inputData.toArray(new String[0]);  
