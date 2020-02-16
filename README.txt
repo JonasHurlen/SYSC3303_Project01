@@ -20,14 +20,16 @@ Included Files
 	Car.java- Class used to represent individual elevator cars by the Elevator Subsystem
 	FloorSubsystem.java- Class representing individual floors. Can send and receive instructions and read information from the input file
 	Instruction.java- Class used to transfer information between other classes.
+	ElevatorState.java - Enum class used to enumerate all possible states of elevator
+	SchedulerState.java - Enum class used to enumerate all possible states of scheduler
 	inputFile.csv- Contains a instructions for the operation of the simulation
 	Iteration1 Documenation.pdf - contains class diagram and sequence diagram
 	Iteration2 Documentation.pdf - contains all necessary diagrams for 
 	Remaining files - There are 2 draw.io files, and 2 png files as a backup for the diagrams
 	
 Credits & Contributions
-	Khalil Aalab: 
-	Abdelrahman Darwish:  readInputFile method()
-	Michael Fairbairn: JUnit Testing, separate packages, general code cleanup
+	Khalil Aalab: Implementation of state machine, organizing files in project
+	Abdelrahman Darwish:  readInputFile method() to read input from CSV file
+	Michael Fairbairn: JUnit Testing
 	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
-	Krishang Karir: Constructing class diagram, sequence diagram and state machine diagram
+	Krishang Karir: Constructing class diagrams, sequence diagrams and state machine diagrams and documentation
