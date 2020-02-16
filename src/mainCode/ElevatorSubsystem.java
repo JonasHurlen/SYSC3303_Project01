@@ -63,6 +63,7 @@ public class ElevatorSubsystem implements Runnable {
 				//wait while both the input and output lists are empty 
 				while (scheduler.outputE.isEmpty()&& !scheduler.inputE.isEmpty()) {
 					try {
+						state = ElevatorState.BLOCKED;
 						scheduler.wait();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block

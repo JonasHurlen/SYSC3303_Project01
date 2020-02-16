@@ -26,6 +26,7 @@ public class Scheduler implements Runnable {
 				// while there are no pending instructions
 				while (this.inputE.isEmpty() && this.inputF.isEmpty()) {
 					try {
+						state = SchedulerState.BLOCKED;
 						this.wait();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block

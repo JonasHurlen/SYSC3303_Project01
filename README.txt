@@ -22,11 +22,12 @@ Included Files
 	Instruction.java- Class used to transfer information between other classes.
 	inputFile.csv- Contains a instructions for the operation of the simulation
 	Iteration1 Documenation.pdf - contains class diagram and sequence diagram
+	Iteration2 Documentation.pdf - contains all necessary diagrams for 
 	Remaining files - There are 2 draw.io files, and 2 png files as a backup for the diagrams
 	
 Credits & Contributions
-	Khalil Aalab: Setting up work environment, incorporating various members work, notifying Floor from Scheduler via acknowledged LinkedList
-	Abdelrahman Darwish: FloorSubsytem thread, readInputFile method()
+	Khalil Aalab: 
+	Abdelrahman Darwish:  readInputFile method()
 	Michael Fairbairn: JUnit Testing, separate packages, general code cleanup
 	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
-	Krishang Karir: Constructing class diagram, sequence diagram and verifying them with the requirements
+	Krishang Karir: Constructing class diagram, sequence diagram and state machine diagram
