@@ -40,6 +40,10 @@ public class FloorSubsystem implements Runnable {
 		this.floorNumber = floorNumber;
 	}
 	
+	public int getFloorNumber() {
+		return this.floorNumber;
+	}
+	
 	/**
 	 * readInputFile() method will read in events from csv file to be sent to the scheduler 
 	 * @param String that is the name of the csv file

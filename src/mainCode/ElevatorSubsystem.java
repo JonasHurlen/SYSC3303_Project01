@@ -116,7 +116,7 @@ public class ElevatorSubsystem implements Runnable {
 							//order.setCarBut(readInputFile("inputFile.csv"));
 							//	
 							
-							List<String> x = readInputFile("C:\\Users\\abdel\\Onedrive\\Desktop\\inputFile.csv");
+							List<String> x = readInputFile("inputFile.csv");
 							String elementone = x.get(3);
 							String elementtwo = x.get(7);
 							//String elementthree = x.get(11);
