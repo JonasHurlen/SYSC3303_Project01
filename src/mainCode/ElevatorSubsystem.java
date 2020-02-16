@@ -13,6 +13,7 @@ public class ElevatorSubsystem implements Runnable {
 	public Scheduler scheduler;
 	private int numCars;//Car number
 	public Car[] cars;
+	private ElevatorState state;
 
 	public ElevatorSubsystem(Scheduler scheduler, int numCars) {
 		this.scheduler = scheduler;
@@ -23,6 +24,7 @@ public class ElevatorSubsystem implements Runnable {
 			cars[i].setCurrFloor(4);
 			cars[i].setDir(0);
 		}
+		state = ElevatorState.WAITING;
 	}
 	
 	public int getCarNum() {
@@ -68,6 +70,7 @@ public class ElevatorSubsystem implements Runnable {
 				//wait while both the input and output lists are empty 
 				while (scheduler.outputE.isEmpty()&& !scheduler.inputE.isEmpty()) {
 					try {
+						state = ElevatorState.BLOCKED;
 						scheduler.wait();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
@@ -76,6 +79,7 @@ public class ElevatorSubsystem implements Runnable {
 				}
 				//if there is something in the incoming instructions
 				if (!scheduler.outputE.isEmpty()) {
+					state = ElevatorState.BUSY;
 					Instruction order = scheduler.outputE.pop();
 					
 					//moves the elevator
@@ -96,20 +100,24 @@ public class ElevatorSubsystem implements Runnable {
 					*/
 					switch(order.getType()) {
 						case 0:
-							System.out.println("E C0");
+							scheduler.console("E C0");
+							//System.out.println("E C0");
 							order.setCarPoll(cars);
 							scheduler.inputE.add(order);
 							break;
 						case 1:
-							
-							order.setCarBut(readInputFile("inputFile.csv"));
-							System.out.println("E C1");
-							System.out.println("Doors open, someone gets on");
+							//
+							//order.setCarBut(readInputFile("inputFile.csv"));
+							scheduler.console("E C1");
+							scheduler.console("Doors open, someone gets on");
+							//System.out.println("E C1");
+							//System.out.println("Doors open, someone gets on");
 							order.setCarBut(7);//used for testing agnostically to the csv
 							scheduler.inputE.add(order);
 							break;
 						case 2:
-							System.out.println("E C2");
+							scheduler.console("E C2");
+							//System.out.println("E C2");
 							scheduler.inputE.add(order);
 							
 					
@@ -117,6 +125,7 @@ public class ElevatorSubsystem implements Runnable {
 					}
 					
 				}
+				state = ElevatorState.WAITING;
 				scheduler.notifyAll();
 				
 
