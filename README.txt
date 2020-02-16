@@ -11,7 +11,8 @@ To Run
 
 Tests
 	- The first test file is TestElevator, which can be run by right-clicking on the file and selecting
-	- run as JUnit test. The second test file, TestInstruction, can be run in the same way.
+	- run as JUnit test. The second test file, TestInstruction, can be run in the same way, 
+	as well as TestCar and TestFloorSubsystem
 	
 Included Files
 	Start.java- The main class of the program. Instantiates and runs all threads
