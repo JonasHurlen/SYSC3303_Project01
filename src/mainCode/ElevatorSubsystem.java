@@ -32,10 +32,11 @@ public class ElevatorSubsystem implements Runnable {
 	}
 	
 
-	public String[] readInputFile(String filename) {
+	public List<String> readInputFile(String filename) {
 		Integer myInt = null;
 		List<String>inputData = new ArrayList<String>();
-		String[] myArray = null;
+		//String[] myArray = null;
+		//int[] arr= null;
         try {
         	Scanner scanner = new Scanner(new File(filename)); // for parsing through the lines
  	        scanner.useDelimiter(","); //sets the delimiter pattern
@@ -43,26 +44,21 @@ public class ElevatorSubsystem implements Runnable {
  	        while(scanner.hasNext()) {
  	        	String x=scanner.next();
  	        	inputData.add(x);
- 	        	Scanner lines = new Scanner(scanner.nextLine()); // to get each line
+ 	        	Scanner lines = new Scanner(new File(filename)); // to get each line
  	        	while (lines.hasNext()) {
  	        		String y = scanner.next();
  	        		inputData.add(y);
- 	        	}//co
+ 	        		
+ 	        	}
  	        }
  	        scanner.close();
- 	        myArray = inputData.toArray(new String[0]);  
-
- 	         myInt =  Integer.parseInt(myArray[3]);
- 	         System.out.println(myArray);
- 	         
- 	        
         }
         catch(FileNotFoundException e) {
         	e.printStackTrace();
         	
         	 }
         finally {
-        	return myArray;
+        	return inputData ;
         }
 	}
 	public void run() {
@@ -109,13 +105,35 @@ public class ElevatorSubsystem implements Runnable {
 						case 1:
 							//
 							//order.setCarBut(readInputFile("inputFile.csv"));
-							scheduler.console("E C1");
-							scheduler.console("Doors open, someone gets on");
-							//System.out.println("E C1");
-							//System.out.println("Doors open, someone gets on");
-							order.setCarBut(7);//used for testing agnostically to the csv
-							scheduler.inputE.add(order);
+							//	
+							
+							List<String> x = readInputFile("C:\\Users\\abdel\\Onedrive\\Desktop\\inputFile.csv");
+							String elementone = x.get(3);
+							String elementtwo = x.get(7);
+							String elementthree = x.get(11);
+							
+							//Change String to ints 
+							
+							int p = Integer.parseInt(elementone);
+							int y = Integer.parseInt(elementtwo);
+							int z = Integer.parseInt(elementthree);
+							int[] myarray = {p,y,z};
+							
+							for ( int i=0; i<3; i++) {
+								//
+								order.setCarBut(myarray[i]);
+								scheduler.console("E C1");
+								scheduler.console("Doors open, someone gets on");
+								
+								//System.out.println("E C1");
+								//System.out.println("Doors open, someone gets on");
+								//order.setCarBut(7);//used for testing agnostically to the csv
+								
+								scheduler.inputE.add(order);
+								
+							}
 							break;
+							
 						case 2:
 							scheduler.console("E C2");
 							//System.out.println("E C2");
