@@ -38,7 +38,7 @@ public class ElevatorSubsystem implements Runnable {
 	public Car getCar(int carID) {
 		if (carID < 0 || carID >= numCars) throw new IndexOutOfBoundsException();
 		
-		return null;
+		return this.cars[carID];
 	}
 
 	public List<String> readInputFile(String filename) {

@@ -18,4 +18,9 @@ class TestElevator {
 	void testCarNumber() {
 		assertEquals(subsystem.getCarNum(), 1);
 	}
+	
+	@Test
+	void testCarsDefault() {
+		assertEquals(subsystem.getCar(0).getId(), 0);
+	}
 }
