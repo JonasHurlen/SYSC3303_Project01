@@ -61,6 +61,12 @@ class TestInstruction {
 		assertEquals(instruction.getfloorOrder(), 3);
 	}
 	
+	@Test
+	void testMove() {
+		instruction.setMove(1);
+		assertEquals(instruction.getMove(), 1);
+	}
+	
 	void setupFloorBut() {
 		instruction2 = new Instruction(1, 1);
 	}
