@@ -7,26 +7,24 @@ public class Car {
 		private int currFloor;
 		int button;
 		private int direction = 0;
-		protected Car(int id) {
+		public Car(int id) {
 			this.id = id;
 		}
 		
-		protected int getId() {
+		public int getId() {
 			return this.id;
 		}
-		protected int getCurrFloor() {
+		public int getCurrFloor() {
 			return this.currFloor;
 		}
 		
-		protected void setCurrFloor(int currFloor) {
+		public void setCurrFloor(int currFloor) {
 			this.currFloor = currFloor;
 		}
-		protected int getDir() {
+		public int getDir() {
 			return direction;
 		}
-		protected void setDir(int dir) {
+		public void setDir(int dir) {
 			this.direction = dir;
 		}
-		
-		
 	}

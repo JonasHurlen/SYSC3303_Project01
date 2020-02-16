@@ -60,7 +60,7 @@ public class FloorSubsystem implements Runnable {
 			}
 			//Close the Scanner
 			scanner.close();
-			String[] myArray = inputData.toArray(new String[0]);
+			myArray = inputData.toArray(new String[0]);
             //Creating a new Instruction
 			instruction = new Instruction(Integer.parseInt(myArray[1]), Integer.parseInt(myArray[2]));
 
