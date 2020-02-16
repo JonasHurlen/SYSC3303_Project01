@@ -117,16 +117,18 @@ public class ElevatorSubsystem implements Runnable {
 							//	
 							
 							List<String> x = readInputFile("inputFile.csv");
-							String elementone = x.get(3);
-							String elementtwo = x.get(7);
+							//String elementone = x.get(2);
+							//String elementtwo = x.get(6);
 							//String elementthree = x.get(11);
 							
 							//Change String to ints 
 							
-							int p = Integer.parseInt(elementone);
-							int y = Integer.parseInt(elementtwo);
+							//int p = Integer.parseInt(elementone);
+							//int y = Integer.parseInt(elementtwo);
 							//int z = Integer.parseInt(elementthree);
-							int[] myarray = {p,y};
+							//int[] myarray = {p,y};
+							
+							int [] myarray = {5,4};
 							
 							for ( int i=0; i<2; i++) {
 								//
