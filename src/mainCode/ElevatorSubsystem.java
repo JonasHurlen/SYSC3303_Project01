@@ -29,21 +29,29 @@ public class ElevatorSubsystem implements Runnable {
 		return this.numCars;
 	}
 	
-	public int readInputFile(String filename) {
+
+	public String[] readInputFile(String filename) {
 		Integer myInt = null;
 		List<String>inputData = new ArrayList<String>();
         try {
-        	Scanner scanner = new Scanner(new File(filename));
+        	Scanner scanner = new Scanner(new File(filename)); // for parsing through the lines
  	        scanner.useDelimiter(","); //sets the delimiter pattern
- 	        
+ 	   
  	        while(scanner.hasNext()) {
  	        	String x=scanner.next();
  	        	inputData.add(x);
+ 	        	Scanner lines = new Scanner(scanner.nextLine()); // to get each line
+ 	        	while (lines.hasNext()) {
+ 	        		String y = scanner.next();
+ 	        		inputData.add(y);
+ 	        	}
  	        }
  	        scanner.close();
  	        String[] myArray = inputData.toArray(new String[0]);  
 
  	         myInt =  Integer.parseInt(myArray[3]);
+ 	         System.out.println(myArray);
+ 	         
  	        
         }
         catch(FileNotFoundException e) {
@@ -51,10 +59,9 @@ public class ElevatorSubsystem implements Runnable {
         	
         	 }
         finally {
-        	return myInt;
+        	return myArray;
         }
 	}
-
 	public void run() {
 		while (true) {
 			synchronized (scheduler) {
@@ -94,8 +101,8 @@ public class ElevatorSubsystem implements Runnable {
 							scheduler.inputE.add(order);
 							break;
 						case 1:
-							//
-							//order.setCarBut(readInputFile("inputFile.csv"));
+							
+							order.setCarBut(readInputFile("inputFile.csv"));
 							System.out.println("E C1");
 							System.out.println("Doors open, someone gets on");
 							order.setCarBut(7);//used for testing agnostically to the csv
