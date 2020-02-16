@@ -35,6 +35,7 @@ public class ElevatorSubsystem implements Runnable {
 	public String[] readInputFile(String filename) {
 		Integer myInt = null;
 		List<String>inputData = new ArrayList<String>();
+		String[] myArray = null;
         try {
         	Scanner scanner = new Scanner(new File(filename)); // for parsing through the lines
  	        scanner.useDelimiter(","); //sets the delimiter pattern
@@ -49,7 +50,7 @@ public class ElevatorSubsystem implements Runnable {
  	        	}//co
  	        }
  	        scanner.close();
- 	        String[] myArray = inputData.toArray(new String[0]);  
+ 	        myArray = inputData.toArray(new String[0]);  
 
  	         myInt =  Integer.parseInt(myArray[3]);
  	         System.out.println(myArray);
