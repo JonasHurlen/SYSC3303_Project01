@@ -121,22 +121,11 @@ return inputData;
 							//	
 							
 							List<String> x = readInputFile();
-							//String elementone = x.get(2);
-							//String elementtwo = x.get(6);
-							//String elementthree = x.get(11);
-							
-							//Change String to ints 
-							
-							//int p = Integer.parseInt(elementone);
-							//int y = Integer.parseInt(elementtwo);
-							//int z = Integer.parseInt(elementthree);
-							//int[] myarray = {p,y};
-							
-							int [] myarray = {5,4};
-							
+							//x is [ 4, 5] 
+							// only destination floors from inputFile column 4
 							for ( int i=0; i<2; i++) {
 								//
-								order.setCarBut(myarray[i]);
+								order.setCarBut(Integer.parseInt(x.get(i)));
 								scheduler.console("E C1");
 								scheduler.console("Doors open, someone gets on");
 								
