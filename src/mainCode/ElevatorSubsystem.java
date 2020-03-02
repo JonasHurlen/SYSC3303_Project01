@@ -49,7 +49,7 @@ public class ElevatorSubsystem implements Runnable {
 		List<String>inputData = new ArrayList<String>();
 		FileReader input = null;
         try {
-         input = new FileReader("C:\\Users\\abdel\\Onedrive\\Desktop\\inputFile.txt");
+         input = new FileReader("inputFile.txt");
  	        }
         catch(FileNotFoundException e) {
         	e.printStackTrace();
