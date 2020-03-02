@@ -1,6 +1,9 @@
 package mainCode;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,35 +44,36 @@ public class ElevatorSubsystem implements Runnable {
 		return this.cars[carID];
 	}
 
-	public List<String> readInputFile(String filename) {
-		Integer myInt = null;
+	public static List<String> readInputFile() {
+		//Integer myInt = null;
 		List<String>inputData = new ArrayList<String>();
-		//String[] myArray = null;
-		//int[] arr= null;
+		FileReader input = null;
         try {
-        	Scanner scanner = new Scanner(new File(filename)); // for parsing through the lines
- 	        scanner.useDelimiter(","); //sets the delimiter pattern
- 	   
- 	        while(scanner.hasNext()) {
- 	        	String x=scanner.next();
- 	        	inputData.add(x);
- 	        	Scanner lines = new Scanner(new File(filename)); // to get each line
- 	        	while (lines.hasNext()) {
- 	        		String y = scanner.next();
- 	        		inputData.add(y);
- 	        		
- 	        	}
+         input = new FileReader("C:\\Users\\abdel\\Onedrive\\Desktop\\inputFile.txt");
  	        }
- 	        scanner.close();
-        }
         catch(FileNotFoundException e) {
         	e.printStackTrace();
         	
         	 }
-        finally {
-        	return inputData ;
+        BufferedReader buff=new BufferedReader(input);
+        String myLine =null;
+        
+      try {
+        	while((myLine = buff.readLine()) !=null){
+        		String[] info = myLine.split(" ");
+        		String destinationFloor = info[3]; 
+        		inputData.add(destinationFloor);
+        		//System.out.println((Integer.parseInt(x.get(0))));
+        		
         }
-	}
+      }
+        	catch(IOException e ) {
+        		e.printStackTrace();
+        	}
+       
+        
+return inputData;
+	}	
 	public void run() {
 		while (true) {
 			synchronized (scheduler) {
