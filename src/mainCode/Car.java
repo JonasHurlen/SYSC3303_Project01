@@ -7,6 +7,8 @@ public class Car {
 		private int currFloor;
 		int button;
 		private int direction = 0;
+		private int doorState = 0; //0 == closed, 1 == open
+		private int type;
 		public Car(int id) {
 			this.id = id;
 		}
@@ -26,5 +28,18 @@ public class Car {
 		}
 		public void setDir(int dir) {
 			this.direction = dir;
+		}
+		public int getType() {
+			return type;
+		}
+		public void setType(int type) {
+			this.type = type;
+		}
+		
+		public int getDoorState() {
+			return doorState;
+		}
+		public void setDoorState(int door) {
+			this.doorState = door;
 		}
 	}

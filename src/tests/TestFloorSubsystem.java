@@ -23,6 +23,6 @@ class TestFloorSubsystem {
 	@Test
 	void testReadInput() {
 		Instruction inst = floor.readInputFile("inputFile.csv");
-		System.out.println(inst.getFloor() + ", " + inst.getFloorBut());
+		System.out.println(inst.getFloor() + ", " + inst.getDirection());
 	}
 }

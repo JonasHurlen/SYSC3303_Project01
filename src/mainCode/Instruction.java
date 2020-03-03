@@ -4,18 +4,18 @@ import java.sql.Timestamp;
 public class Instruction {
 	Timestamp timestamp = new Timestamp(0);
 	private int floor;//floor instruction originated from
-	private int floorBut;//direction of travel (0 is down, 1 is up,)
+	private int direction;//direction of travel (0 is down, 1 is up, -1 is idle)
 	private int carCur;//current floor of the car
 	private int carBut;//last button pressed in car
-	private int type = 0;//Flag for current instruction interpretation (0 is poll, 1 is receive button input, 2 is movement to a floor)
+	private int type = 0;//Flag for current instruction interpretation (0 is poll, 1 is idle, 2 is open the door, 3 is idle open, 4 is close door, 5 is go up, 6 is go down)
 	private int carNum;//number of the car
 	private int floorOrder;//next position the car should go to
 	private Car[] carPoll;
-	private int move = 0;//how the car should move next
+	//private int move = 0;//how the car should move next
 	
 	public Instruction(int floor, int floorBut){
 		this.floor = floor;
-		this.floorBut = floorBut;
+		this.direction = floorBut;
 	}
 	
 	public Timestamp getTime(){
@@ -26,8 +26,8 @@ public class Instruction {
 		return floor;
 	}
 	
-	public int getFloorBut() {
-		return floorBut;
+	public int getDirection() {
+		return direction;
 	}
 	
 	public int getCarCur() {
@@ -69,6 +69,7 @@ public class Instruction {
 		this.floorOrder = floorOrder;
 	}
 	
+	/*
 	public int getMove() {
 		return move;
 	}
@@ -76,7 +77,7 @@ public class Instruction {
 	public void setMove(int Move) {
 		this.move = Move;
 	}
-	
+	*/
 	public Car[] getCarPoll() {
 		return carPoll;
 	}

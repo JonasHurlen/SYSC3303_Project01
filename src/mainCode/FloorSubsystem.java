@@ -7,6 +7,7 @@ public class FloorSubsystem implements Runnable {
 	private int floorNumber;
 	private String[] myArray;
 	private Scheduler scheduler;
+	Properties prop = new Properties();
 
 	public void run() {
 
@@ -17,7 +18,6 @@ public class FloorSubsystem implements Runnable {
 					try {
 						scheduler.wait();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -35,9 +35,18 @@ public class FloorSubsystem implements Runnable {
  * @param scheduler
  * @param floorNumber
  */
-	public FloorSubsystem(Scheduler scheduler, int floorNumber) {
+	public FloorSubsystem(Scheduler scheduler) {
+		FileInputStream ip;
+		try {
+			ip = new FileInputStream("config.properties");
+			prop.load(ip);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 		this.scheduler = scheduler;
-		this.floorNumber = floorNumber;
+		this.floorNumber = Integer.parseInt(prop.getProperty("FLOORS"));
 	}
 	
 	public int getFloorNumber() {

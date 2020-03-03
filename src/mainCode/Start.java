@@ -3,13 +3,13 @@ package mainCode;
 public class Start {
 	public static void main(String[] args) {
 		
-		Scheduler scheduler = new Scheduler(1,2);
+		Scheduler scheduler = new Scheduler();
 
-		FloorSubsystem myFloor = new FloorSubsystem(scheduler, 2);
+		FloorSubsystem myFloor = new FloorSubsystem(scheduler);
 		Instruction inst = myFloor.readInputFile("inputFile.csv");
 		
 		
-		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler,1);
+		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler);
 		//Temp until file to elevator is implemented
 		//temp until FloorSub is integrated
 		scheduler.inputF.add(inst);

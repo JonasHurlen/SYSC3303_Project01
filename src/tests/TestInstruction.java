@@ -29,8 +29,8 @@ class TestInstruction {
 	@Test
 	void testFloorBut() {
 		setupFloorBut();
-		assertEquals(instruction.getFloorBut(), 0);
-		assertEquals(instruction2.getFloorBut(), 1);
+		assertEquals(instruction.getDirection(), 0);
+		assertEquals(instruction2.getDirection(), 1);
 	}
 	
 	@Test

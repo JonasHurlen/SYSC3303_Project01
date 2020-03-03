@@ -1,6 +1,10 @@
 package mainCode;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
+import java.util.Properties;
 
 public class Scheduler implements Runnable {
 
@@ -10,57 +14,139 @@ public class Scheduler implements Runnable {
 	LinkedList<Instruction> acknowledged = new LinkedList<Instruction>();// output to floor
 	public LinkedList<Instruction>[] orders;
 	private Car[] cars;
-	private SchedulerState state;
+	// private ElevatorOrder
+	// private SchedulerState state;
+	private int numFloors;
+	private boolean hasInit = false;
 
-	public Scheduler(int numCars, int numFloors) {
-		orders = new LinkedList[numCars];
-		state = SchedulerState.WAITING;
+	public Scheduler() {
+		Properties prop = new Properties();
+		try {
+			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
+			prop.load(inputStream);
+			System.out.println(prop.getProperty("CARS"));
+			// orders = new LinkedList[Integer.parseInt(prop.getProperty("CARS"))];
+			this.orders = new LinkedList[4];
+			// this.numFloors = Integer.parseInt(prop.getProperty("FLOORS"));
+			this.numFloors = 22;
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+
+		// state = SchedulerState.WAITING;
+
+	}
+
+	public void writeToElevator(Instruction ins) {
+
+	}
+
+	public Instruction readFromElevator() {
+
+		return null;
+	}
+
+	public void writeToFloor(Instruction ins) {
+
+	}
+
+	public Instruction readFromFloor() {
+
+		return null;
+	}
+
+	public void elevatorRun(int carNum) {
+		// synchronized(read)
+		while (!this.orders[carNum].isEmpty()) {
+			int next = -1;
+			Instruction nextOrder = null;
+			Car currCar = cars[carNum];
+			int currDir = currCar.getDir();
+
+			for (Instruction ins : this.orders[carNum]) {
+				if (currDir == ins.getDirection() || currDir == -1) {
+					int dist = Math.abs(currCar.getCurrFloor() - ins.getfloorOrder());
+					if (next == -1 || dist < next) {
+						next = dist;
+						nextOrder = ins;
+					}
+				}
+			}
+			if (nextOrder != null) {
+				switch (currCar.getType()) {
+				case 0:
+					// Should never get here
+				case 1:
+					// If the car is on the floor it is supposed to be on, open the doors
+					if (currCar.getCurrFloor() == nextOrder.getFloor()
+							|| currCar.getCurrFloor() == nextOrder.getCarBut()) {
+						nextOrder.setType(2);
+					} else {
+						// Else start it moving
+						if (nextOrder.getDirection() == 0) {
+							nextOrder.setType(6);
+						} else {
+							nextOrder.setType(5);
+						}
+					}
+					writeToElevator(nextOrder);
+					break;
+
+				}
+			}
+
+		}
 	}
 
 	@Override
 	public void run() {
-
-		// TODO Auto-generated method stub
 		synchronized (this) {
 			while (true) {
 				// while there are no pending instructions
 				while (this.inputE.isEmpty() && this.inputF.isEmpty()) {
 					try {
-						state = SchedulerState.BLOCKED;
+						// state = SchedulerState.BLOCKED;
 						this.wait();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				if (!this.inputF.isEmpty()) {
 					// Takes information from floor and sends it through to the elevators to receive
 					// info
-					state = SchedulerState.BUSY;
-					
-					if (inputF.peek().getFloorBut() == 0) {
-						console(inputF.peek().getFloor() + " going down");
+					// state = SchedulerState.BUSY;
+					Instruction order = inputF.pop();
+					if (order.getDirection() == 0) {
+						console(order.getFloor() + " going down");
 					} else {
-						console(inputF.peek().getFloor() + " going up");
+						console(order.getFloor() + " going up");
 					}
 
-					outputE.add(inputF.pop());
-					state = SchedulerState.WAITING;
+					if (!hasInit) {
+						outputE.add(order);
+					} else {
+						int carNum = schedule(order.getFloor(), order.getDirection(), cars);
+						order.setCarNum(carNum);
+						orders[carNum].add(order);
+					}
+
+					// state = SchedulerState.WAITING;
 
 				}
 
 				if (!this.inputE.isEmpty()) {
 					// Receives complete instruction and then sorts it to an elevator
 					// Stuff to figure out which elevator it goes to
-					state = SchedulerState.BUSY;
+					// state = SchedulerState.BUSY;
 					Instruction order = inputE.pop();
 					switch (order.getType()) {
 					case 0:
-						console("S C0");
-						int distance = 999;
+						console("Recieved Poll");
+						int distance = numFloors;
 						cars = order.getCarPoll();
 						for (Car car : cars) {
-							if (car.getDir() == order.getFloorBut() || car.getDir() == 0) {
+							if (car.getDir() == order.getDirection() || car.getDir() == 0) {
 								if (car.getCurrFloor() == order.getFloor()) {
 									order.setType(1);
 									order.setCarNum(car.getId());
@@ -82,7 +168,7 @@ public class Scheduler implements Runnable {
 						}
 						console(order.getMove());
 						this.outputE.add(order);
-						
+
 						break;
 
 					case 1:
@@ -115,9 +201,9 @@ public class Scheduler implements Runnable {
 						break;
 
 					}
-					
+
 				}
-				state = SchedulerState.WAITING;
+				// state = SchedulerState.WAITING;
 				this.notifyAll();
 
 			}
@@ -128,6 +214,33 @@ public class Scheduler implements Runnable {
 
 	public void console(Object in) {
 		System.out.println(in);
+	}
+
+	private int schedule(int floor, int dir, Car[] cars) {
+		int distance = -1;
+		int carNum = -1;
+		for (Car car : cars) {
+			if (car.getDir() == dir) {
+				if (dir == 0) {
+					int carFloor = car.getCurrFloor();
+					if (carFloor > floor) {
+						if (distance < Math.abs(carFloor - floor) || distance == -1) {
+							distance = Math.abs(carFloor - floor);
+							carNum = car.getId();
+						}
+					}
+				} else {
+					int carFloor = car.getCurrFloor();
+					if (carFloor < floor) {
+						if (distance < Math.abs(carFloor - floor) || distance == -1) {
+							distance = Math.abs(carFloor - floor);
+							carNum = car.getId();
+						}
+					}
+				}
+			}
+		}
+		return carNum;
 	}
 
 }
