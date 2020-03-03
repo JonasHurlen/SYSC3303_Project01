@@ -1,8 +1,10 @@
 package mainCode;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -29,7 +31,7 @@ public class ElevatorSubsystem implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		this.numCars = Integer.parseInt(prop.getProperty("CARS"));
 		cars = new Car[numCars];
 		for (int i = 0; i < numCars; i++) {
@@ -56,32 +58,32 @@ public class ElevatorSubsystem implements Runnable {
 		return this.cars[carID];
 	}
 
-	public List<String> readInputFile(String filename) {
-		Integer myInt = null;
+	public static List<String> readInputFile() {
+		// Integer myInt = null;
 		List<String> inputData = new ArrayList<String>();
-		// String[] myArray = null;
-		// int[] arr= null;
+		FileReader input = null;
 		try {
-			Scanner scanner = new Scanner(new File(filename)); // for parsing through the lines
-			scanner.useDelimiter(","); // sets the delimiter pattern
-
-			while (scanner.hasNext()) {
-				String x = scanner.next();
-				inputData.add(x);
-				Scanner lines = new Scanner(new File(filename)); // to get each line
-				while (lines.hasNext()) {
-					String y = scanner.next();
-					inputData.add(y);
-
-				}
-			}
-			scanner.close();
+			input = new FileReader("inputFile.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 
-		} finally {
-			return inputData;
 		}
+		BufferedReader buff = new BufferedReader(input);
+		String myLine = null;
+
+		try {
+			while ((myLine = buff.readLine()) != null) {
+				String[] info = myLine.split(" ");
+				String destinationFloor = info[3];
+				inputData.add(destinationFloor);
+				// System.out.println((Integer.parseInt(x.get(0))));
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return inputData;
 	}
 
 	public void run() {
@@ -118,7 +120,7 @@ public class ElevatorSubsystem implements Runnable {
 						scheduler.inputE.add(order);
 						break;
 					case 1:
-						//Stop/idle
+						// Stop/idle
 						scheduler.console(car + " is on " + order.getFloor());
 						scheduler.inputE.add(order);
 						break;
@@ -143,7 +145,8 @@ public class ElevatorSubsystem implements Runnable {
 						for (int i = 0; i < 2; i++) {
 							//
 							order.setCarBut(myarray[i]);
-							scheduler.console(car + " Doors open on " + order.getFloor() + ", someone presses a button");
+							scheduler
+									.console(car + " Doors open on " + order.getFloor() + ", someone presses a button");
 
 							scheduler.inputE.add(order);
 
@@ -151,11 +154,11 @@ public class ElevatorSubsystem implements Runnable {
 						break;
 
 					case 3:
-						//Idle with open doors
+						// Idle with open doors
 						scheduler.console(car + " loading on " + order.getFloor());
 						scheduler.inputE.add(order);
 						break;
-						
+
 					case 4:
 						// Close the door
 						cars[car].setDoorState(0);
@@ -164,21 +167,19 @@ public class ElevatorSubsystem implements Runnable {
 						break;
 					case 5:
 						// Move elevator up
-						
-							cars[car].setCurrFloor(cars[car].getCurrFloor() + 1);
-							order.setCarCur(cars[order.getCarNum()].getCurrFloor());
-							System.out.println("Car " + order.getCarNum() + " moved up to " + cars[car].getCurrFloor());
-						
+
+						cars[car].setCurrFloor(cars[car].getCurrFloor() + 1);
+						order.setCarCur(cars[order.getCarNum()].getCurrFloor());
+						System.out.println("Car " + order.getCarNum() + " moved up to " + cars[car].getCurrFloor());
 
 						break;
-						
+
 					case 6:
 						// Move elevator down
-						
-							cars[car].setCurrFloor(cars[car].getCurrFloor()-1);
-							order.setCarCur(cars[order.getCarNum()].getCurrFloor());
-							System.out.println("Car " + order.getCarNum() + " moved down to " + cars[car].getCurrFloor());
-						
+
+						cars[car].setCurrFloor(cars[car].getCurrFloor() - 1);
+						order.setCarCur(cars[order.getCarNum()].getCurrFloor());
+						System.out.println("Car " + order.getCarNum() + " moved down to " + cars[car].getCurrFloor());
 
 						break;
 					}

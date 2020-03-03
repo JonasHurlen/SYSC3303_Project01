@@ -6,7 +6,7 @@ public class Start {
 		Scheduler scheduler = new Scheduler();
 
 		FloorSubsystem myFloor = new FloorSubsystem(scheduler);
-		Instruction inst = myFloor.readInputFile("inputFile.csv");
+		Instruction inst = myFloor.readInputFile();
 		
 		
 		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler);

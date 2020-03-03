@@ -25,8 +25,8 @@ public class Scheduler implements Runnable {
 			InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
 			prop.load(inputStream);
 			System.out.println(prop.getProperty("CARS"));
-			// orders = new LinkedList[Integer.parseInt(prop.getProperty("CARS"))];
-			this.orders = new LinkedList[4];
+			orders = new LinkedList[Integer.parseInt(prop.getProperty("CARS"))];
+			//this.orders = new LinkedList[4];
 			// this.numFloors = Integer.parseInt(prop.getProperty("FLOORS"));
 			this.numFloors = 22;
 

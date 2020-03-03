@@ -59,30 +59,39 @@ public class FloorSubsystem implements Runnable {
 	 * @return Instruction 
 	 */
 
-	public Instruction readInputFile(String filename) {
-		Instruction instruction = null;
-		List<String> inputData = new ArrayList<String>();
-		try {
-			// Create a new scanner that takes in the csv file
-			Scanner scanner = new Scanner(new File(filename));
-			scanner.useDelimiter(","); // sets the delimiter pattern
-            // Checks if the scanner object has another token, if there is then it will add it to the list
-			while (scanner.hasNext()) {
-				String x = scanner.next();
-				inputData.add(x);
-			}
-			//Close the Scanner
-			scanner.close();
-			myArray = inputData.toArray(new String[0]);
-            //Creating a new Instruction
-			instruction = new Instruction(Integer.parseInt(myArray[1]), Integer.parseInt(myArray[2]));
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-
-		} finally {
-			return instruction;
-		}
+	public static Instruction readInputFile() {
+		//Integer myInt = null;
+		List<String>inputData = new ArrayList<String>();
+		FileReader input = null;
+        try {
+         input = new FileReader("inputFile.txt");
+ 	        }
+        catch(FileNotFoundException e) {
+        	e.printStackTrace();
+        	
+        	 }
+        BufferedReader buff=new BufferedReader(input);
+        String myLine =null;
+        Instruction instruction = null;
+        
+      try {
+        	while((myLine = buff.readLine()) !=null){
+        		String[] info = myLine.split(" ");
+        		String destinationFloor = info[3]; 
+        		inputData.add(destinationFloor);
+        		//System.out.println((Integer.parseInt(x.get(0))));
+        		instruction = new Instruction(Integer.parseInt(info[1]), Integer.parseInt(info[2]));
+        }
+        	
+        	
+        	
+      }
+        	catch(IOException e ) {
+        		e.printStackTrace();
+        	}
+       
+        
+      return instruction;
 	}
 
 }
