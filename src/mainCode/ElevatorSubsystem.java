@@ -152,7 +152,7 @@ public class ElevatorSubsystem implements Runnable {
 						cars[car].setCurrFloor(cars[car].getCurrFloor() + 1);
 						order.setCarCur(cars[order.getCarNum()].getCurrFloor());
 						System.out.println("Car " + order.getCarNum() + " moved up to " + cars[car].getCurrFloor());
-
+						scheduler.inputE.add(order);
 						break;
 					case 5:
 						// Move elevator down
@@ -160,7 +160,7 @@ public class ElevatorSubsystem implements Runnable {
 						cars[car].setCurrFloor(cars[car].getCurrFloor() - 1);
 						order.setCarCur(cars[order.getCarNum()].getCurrFloor());
 						System.out.println("Car " + order.getCarNum() + " moved down to " + cars[car].getCurrFloor());
-
+						scheduler.inputE.add(order);
 						break;
 
 				
