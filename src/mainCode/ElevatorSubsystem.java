@@ -227,7 +227,6 @@ public class ElevatorSubsystem implements Runnable {
 						state = ElevatorState.BLOCKED;
 						scheduler.wait();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -252,7 +251,6 @@ public class ElevatorSubsystem implements Runnable {
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						sendScheduler(order);
@@ -273,7 +271,6 @@ public class ElevatorSubsystem implements Runnable {
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						sendScheduler(order);
@@ -284,7 +281,6 @@ public class ElevatorSubsystem implements Runnable {
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						doorOpen[car] = false;
@@ -299,7 +295,6 @@ public class ElevatorSubsystem implements Runnable {
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						sendScheduler(order);
@@ -313,7 +308,6 @@ public class ElevatorSubsystem implements Runnable {
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						sendScheduler(order);
@@ -324,7 +318,6 @@ public class ElevatorSubsystem implements Runnable {
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						doorOpen[car] = false;
@@ -337,7 +330,6 @@ public class ElevatorSubsystem implements Runnable {
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						sendScheduler(order);
@@ -353,6 +345,10 @@ public class ElevatorSubsystem implements Runnable {
 
 		}
 
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 
 }

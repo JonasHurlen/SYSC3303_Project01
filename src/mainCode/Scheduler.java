@@ -111,13 +111,15 @@ public class Scheduler implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				
+					System.out.println("Stuck here");
 				}
 				
+				//System.out.println("I'm out");
 
 				if (!this.inputF.isEmpty()) {
 					// Takes information from floor and sends it through to the elevators to receive
 					// info
+					System.out.println("Stuck here 2");
 					state = SchedulerState.BUSY;
 					Instruction instruction = readFromFloor();
 

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Instruction {
 	private int instructionID;
-	Timestamp timestamp = new Timestamp(0);
+	private String timestamp;
 	private int floor;//floor instruction originated from
 	private int floorBut;//direction of travel (0 is down, 1 is up, -1 is idle)
 	private int carCur;//current floor of the car
@@ -47,6 +47,20 @@ public class Instruction {
 		this.instructionID = instructionID;
 	}
 	
+	/**
+	 * Public constructor for class instruction
+	 *
+	 * @param floor floor number  
+	 * @param floorBut button on floor stating up or down
+	 * @param instructionID ID of the instruction (line number)
+	 */
+	public Instruction(String timestamp, int floor, int floorBut, int instructionID){
+		this.timestamp = timestamp;
+		this.floor = floor;
+		this.floorBut = floorBut;
+		this.instructionID = instructionID;
+	}
+	
 	public Instruction(int instructionID, int carNum, int carCur, int type) { 
 		this.type = type; 
 		this.carNum =carNum; 
@@ -59,7 +73,7 @@ public class Instruction {
 	 *
 	 * @return the current time
 	 */
-	public Timestamp getTime(){
+	public String getTime(){
 		return timestamp;
 	}
 	

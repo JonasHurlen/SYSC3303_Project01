@@ -12,17 +12,16 @@ class TestFloorSubsystem {
 	
 	@BeforeEach
 	void setup() {
-		floor = new FloorSubsystem(null, 1);
+		floor = new FloorSubsystem(null);
 	}
 	
-	@Test
-	void testFloorNumber() {
-		assertEquals(floor.getFloorNumber(), 1);
-	}
+
 	
 	@Test
 	void testReadInput() {
-		Instruction inst = floor.readInputFile("inputFile.csv");
-		System.out.println(inst.getFloor() + ", " + inst.getFloorBut());
+		Instruction inst = floor.readInputFile(0);
+		assertEquals(inst.getFloor(), 2);
+		assertEquals(inst.getFloorBut(), 1);
+		
 	}
 }
