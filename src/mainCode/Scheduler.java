@@ -89,10 +89,12 @@ public class Scheduler implements Runnable {
 					} else {
 						console("Floor " + instruction.getFloor() + " requests up");
 					}
-					int currCar = schedule(instruction.getFloor(), instruction.getCarBut(), cars);
-					addOrder(orders[currCar], instruction);
+					int currCar = schedule(instruction.getCarCur(), instruction.getCarBut(), cars);
+					System.out.println("The current car is " + currCar);
 
+					addOrder(orders[currCar], instruction);
 					orders[currCar].peek().setCarNum(currCar);
+
 					state = SchedulerState.WAITING;
 
 				}
@@ -109,12 +111,14 @@ public class Scheduler implements Runnable {
 					// temp until udp
 					outSwitch[carCurr] = false;
 				}
+				
 				for (int carCurr = 0; carCurr < outSwitch.length; carCurr++) {
 					if (!outSwitch[carCurr] && !orders[carCurr].isEmpty()) {
 						Instruction currOrder = orders[carCurr].pop();
 						outSwitch[carCurr] = true;
-						cars[carCurr].setCurrFloor(currOrder.getFloor());
+						cars[carCurr].setCurrFloor(currOrder.getCarCur());
 						cars[carCurr].setDir(currOrder.getFloorBut());
+						// System.out.println("Car " + carCurr + "'s order is " );
 
 						switch (currOrder.getType()) {
 						case 0:
@@ -154,36 +158,36 @@ public class Scheduler implements Runnable {
 
 						case 1:
 							// door has opened
-							if(currOrder.getHasPass()) {
-								if(!orders[carCurr].isEmpty()) {
+							if (currOrder.getHasPass()) {
+								if (!orders[carCurr].isEmpty()) {
 									Instruction next = orders[carCurr].peek();
-									if(next.getHasPass()) {
-										
-										if(next.getFloor() == currOrder.getCarCur()) {
+									if (next.getHasPass()) {
+
+										if (next.getFloor() == currOrder.getCarCur()) {
 											currOrder.setType(2);
-											writeToElevator(currOrder);	
-										}else {
+											writeToElevator(currOrder);
+										} else {
 											currOrder.setType(7);
 											writeToElevator(currOrder);
 										}
-									}else {
-										if(next.getCarBut() == currOrder.getCarCur()) {
+									} else {
+										if (next.getCarBut() == currOrder.getCarCur()) {
 											currOrder.setType(2);
-											writeToElevator(currOrder);	
-										}else {
+											writeToElevator(currOrder);
+										} else {
 											currOrder.setType(7);
 											writeToElevator(currOrder);
 										}
 									}
-								}else {
+								} else {
 									currOrder.setType(7);
 									writeToElevator(currOrder);
 								}
-							}else {
+							} else {
 								currOrder.setType(2);
 								writeToElevator(currOrder);
 							}
-							
+
 							break;
 						case 2:
 							// door is open, loading
@@ -255,11 +259,14 @@ public class Scheduler implements Runnable {
 							// end of instruction
 							writeToFloor(currOrder);
 							outSwitch[carCurr] = false;
+							pending[carCurr] = null;
+							break;
 
 						case 7:
 							// end of instruction
 							currOrder.setType(6);
 							writeToElevator(currOrder);
+							break;
 						}
 					}
 				}
@@ -278,13 +285,17 @@ public class Scheduler implements Runnable {
 		int carNum = -1;
 		int numOrders = -1;
 		for (Car car : cars) {
+			// System.out.println("Car " + car.getId() + " is going " + car.getDir() + ",
+			// wants " + dir);
 			if (car.getDir() == dir || car.getDir() == -1) {
+				// System.out.println("Checked dir");
 				if (car.getDir() == 0) {
 					int carFloor = car.getCurrFloor();
 					if (carFloor > floor) {
 						if (distance < Math.abs(carFloor - floor) || distance == -1) {
 							distance = Math.abs(carFloor - floor);
 							System.out.println("Dir 0, " + distance);
+							// System.out.println("?");
 							carNum = car.getId();
 						}
 					}
@@ -309,6 +320,21 @@ public class Scheduler implements Runnable {
 				}
 			}
 		}
+		if (carNum == -1) {
+
+			for (int i = 0; i < orders.length; i++) {
+				if (orders[i].isEmpty()) {
+					numOrders = orders[i].size();
+					carNum = i;
+				} else {
+					if (orders[i].size() < numOrders || numOrders == -1) {
+						numOrders = orders[i].size();
+						carNum = i;
+					}
+				}
+			}
+
+		}
 		return carNum;
 	}
 
@@ -327,7 +353,7 @@ public class Scheduler implements Runnable {
 
 	private void writeToElevator(Instruction ins) {
 		// reading stuff
-		//System.out.println("Write to elevator");
+		// System.out.println("Write to elevator");
 		outputE.add(ins);
 
 		pending[ins.getCarNum()] = ins;
@@ -349,40 +375,57 @@ public class Scheduler implements Runnable {
 			destination = newIns.getFloor();
 		}
 		if (orderList.isEmpty()) {
+			// System.out.println("Added to empty");
 			orderList.add(newIns);
 		} else {
+			// System.out.println("Added to existing");
 			if (orderList.peekFirst().getCarBut() == 0) {
 				for (Instruction ins : orderList) {
 					if (ins.getHasPass()) {
 						if (ins.getCarBut() >= destination) {
-							orderList.add(orderList.indexOf(ins) - 1, newIns);
+							if (orderList.indexOf(ins) != 0) {
+								orderList.add(orderList.indexOf(ins) - 1, newIns);
+							} else {
+								orderList.add(0, newIns);
+							}
 							break;
 						}
 
 					} else {
-						if (ins.getHasPass()) {
-							if (ins.getFloor() >= destination) {
+						if (ins.getFloor() >= destination) {
+							if (orderList.indexOf(ins) != 0) {
 								orderList.add(orderList.indexOf(ins) - 1, newIns);
-								break;
+							} else {
+								orderList.add(0, newIns);
 							}
+
+							break;
 						}
+
 					}
 				}
 			} else if (orderList.peekFirst().getCarBut() == 1) {
 				for (Instruction ins : orderList) {
 					if (ins.getHasPass()) {
 						if (ins.getCarBut() <= destination) {
-							orderList.add(orderList.indexOf(ins) - 1, newIns);
+							if (orderList.indexOf(ins) != 0) {
+								orderList.add(orderList.indexOf(ins) - 1, newIns);
+							} else {
+								orderList.add(0, newIns);
+							}
 							break;
 						}
 					} else {
-						if (ins.getHasPass()) {
-							if (ins.getFloor() <= destination) {
+						if (ins.getFloor() <= destination) {
+							if (orderList.indexOf(ins) != 0) {
 								orderList.add(orderList.indexOf(ins) - 1, newIns);
-								break;
+							} else {
+								orderList.add(0, newIns);
 							}
+							break;
 						}
 					}
+
 				}
 			} else {
 				orderList.add(newIns);

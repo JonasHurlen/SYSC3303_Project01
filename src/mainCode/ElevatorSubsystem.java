@@ -118,7 +118,7 @@ public class ElevatorSubsystem implements Runnable {
 					switch (type) {
 					case 0:
 						// Stop/idle
-						scheduler.console(car + " is on " + order.getCarCur());
+						scheduler.console("Car " + car + " is on " + order.getCarCur());
 						scheduler.inputE.add(order);
 						break;
 					case 1:
@@ -144,7 +144,7 @@ public class ElevatorSubsystem implements Runnable {
 						//
 						order.setCarBut(Integer.parseInt(x.get(order.getInstructionID())));
 						
-						scheduler.console("Doors are open, someone gets on and requests floor " + order.getCarBut());
+						scheduler.console("Car " + car + "'s Doors are open, someone gets on and requests floor " + order.getCarBut());
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
