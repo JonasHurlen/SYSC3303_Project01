@@ -56,7 +56,6 @@ public class FloorSubsystem implements Runnable {
 		//Integer myInt = null;
 		List<String>inputData = new ArrayList<String>();
 		FileReader input = null;
-		int lineNumber = 0;
         try {
          input = new FileReader("inputFile.txt");
  	        }
@@ -77,7 +76,7 @@ public class FloorSubsystem implements Runnable {
         		String destinationFloor = info[3]; 
         		inputData.add(destinationFloor);
         		//System.out.println((Integer.parseInt(x.get(0))));
-        		instruction = new Instruction(Integer.parseInt(info[1]), Integer.parseInt(info[2]), lineNumber);
+        		instruction = new Instruction(Integer.parseInt(info[1]), Integer.parseInt(info[2]), desiredLine);
         		
         		
         

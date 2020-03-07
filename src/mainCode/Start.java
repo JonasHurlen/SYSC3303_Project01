@@ -8,7 +8,7 @@ public class Start {
 		FloorSubsystem myFloor = new FloorSubsystem(scheduler, 2);
 		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler);
 		
-		int numberOfLines = 4;
+		int numberOfLines = 5;
 		Instruction inst;
 		
 		for (int i = 0; i < numberOfLines; i++) {
