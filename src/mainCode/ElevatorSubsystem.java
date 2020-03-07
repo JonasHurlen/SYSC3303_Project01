@@ -27,22 +27,25 @@ public class ElevatorSubsystem implements Runnable {
 	private boolean[] elevatorLamp;
 	private boolean[] doorOpen;
 	Properties prop = new Properties();
-	DatagramPacket sendPacket, receivePacket;
-	DatagramSocket receiveSocket, sendSocket;
+	DatagramPacket sendPacket;
+	DatagramSocket sendSocket;
+	public LinkedList<Instruction> outputE;
+	public LinkedList<Instruction> inputE;
 
 	/**
 	 * Public constructor for class elevator subsystem
 	 *
 	 * @param scheduler scheduler used to schedule the relevant elevators
 	 * @param numCars car number
+	 * @throws IOException 
 	 */
-	public ElevatorSubsystem(Scheduler scheduler) {
+	public ElevatorSubsystem(Scheduler scheduler){
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
 			// send and receive UDP Datagram packets.
 			sendSocket = new DatagramSocket();
-			receiveSocket = new DatagramSocket(38594);
+			
 		} catch (SocketException se) { // Can't create the socket.
 			se.printStackTrace();
 			System.exit(1);
@@ -67,6 +70,14 @@ public class ElevatorSubsystem implements Runnable {
 		}
 		elevatorLamp = new boolean[numCars];
 		doorOpen = new boolean[numCars];
+		
+		
+			ElevatorRead reader;
+			reader = new ElevatorRead(this);
+			Thread tReader = new Thread(reader);
+			tReader.start();
+		
+		
 		state = ElevatorState.WAITING;
 	}
 	
@@ -128,7 +139,9 @@ public class ElevatorSubsystem implements Runnable {
 		return inputData;
 	}
 
-	public Instruction receiveScheduler() {
+	/*
+	//public Instruction receiveScheduler() {
+	public void receiveScheduler() {
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
 		System.out.println("Elevator: Waiting for Packet.\n");
@@ -162,14 +175,14 @@ public class ElevatorSubsystem implements Runnable {
 		int carNum = Integer.parseInt(info[1]);
 		int carCur = Integer.parseInt(info[2]);
 		int type = Integer.parseInt(info[3]);
-		
-		return new Instruction(instructionID, carNum, carCur, type);
+		outputE.add(new Instruction(instructionID, carNum, carCur, type));
+		//return new Instruction(instructionID, carNum, carCur, type);
 		
 		
 				
 		
 	}
-
+*/
 	public void sendScheduler(Instruction inst) {
 
 		String first = ((Integer) inst.getInstructionID()).toString();
@@ -221,7 +234,7 @@ public class ElevatorSubsystem implements Runnable {
 		while (true) {
 			synchronized (scheduler) {
 				// wait while both the input and output lists are empty
-				while (scheduler.outputE.isEmpty() && !scheduler.inputE.isEmpty()) {// will change to individual write
+				while (scheduler.outputE.isEmpty() && !inputE.isEmpty()) {// will change to individual write
 																					// queues
 					try {
 						state = ElevatorState.BLOCKED;
@@ -232,11 +245,11 @@ public class ElevatorSubsystem implements Runnable {
 					}
 				}
 				// if there is something in the incoming instructions
-				if (!scheduler.outputE.isEmpty()) {
+				if (!outputE.isEmpty()) {
 					// System.out.println("Elevator Reading");
 					state = ElevatorState.BUSY;
-					//Instruction order = scheduler.outputE.pop();
-					Instruction order = receiveScheduler();
+					Instruction order = scheduler.outputE.pop();
+					//Instruction order = receiveScheduler();
 					System.out.println(order.getCarCur() + " " + order.getCarNum() + " " + order.getInstructionID());
 					int type = order.getType();
 					int car = order.getCarNum();
@@ -354,5 +367,5 @@ public class ElevatorSubsystem implements Runnable {
 		}
 
 	}
-
 }
+
