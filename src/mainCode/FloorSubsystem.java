@@ -52,7 +52,7 @@ public class FloorSubsystem implements Runnable {
 		}
 
 		System.out.println("Floor: Packet sent.\n");
-		scheduler.readFromFloor();
+		//scheduler.readFromFloor();
 
 	}
 
@@ -64,9 +64,9 @@ public class FloorSubsystem implements Runnable {
 	public void run() {
 
 		while (true) {
-			synchronized (scheduler) {
+			/*
 				// wait while both the input and output lists are empty
-				while (scheduler.acknowledged.isEmpty()) {
+				while (acknowledged.isEmpty()) {
 					try {
 						scheduler.wait();
 					} catch (InterruptedException e) {
@@ -77,8 +77,7 @@ public class FloorSubsystem implements Runnable {
 				System.out.println("Request acknowledged by floor");
 				scheduler.acknowledged.pop();
 				scheduler.notifyAll();
-			}
-
+			*/
 		}
 
 	}

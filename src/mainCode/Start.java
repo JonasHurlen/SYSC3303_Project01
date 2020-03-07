@@ -4,7 +4,7 @@ public class Start {
 	public static void main(String[] args) {
 
 		Scheduler scheduler = new Scheduler();
-		FloorSubsystem floors = new FloorSubsystem(scheduler);
+		FloorSubsystem floors = new FloorSubsystem();
 		ElevatorSubsystem elevators = new ElevatorSubsystem(scheduler);
 
 		floors.startReading();

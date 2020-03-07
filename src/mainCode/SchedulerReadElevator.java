@@ -1,14 +1,15 @@
 package mainCode;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-public class SchedulerRead implements Runnable{
+public class SchedulerReadElevator implements Runnable{
 	DatagramSocket receiveSocket;
 	DatagramPacket receivePacket;
 	Scheduler master;
-	SchedulerRead(Scheduler master){
+	SchedulerReadElevator(Scheduler master){
 		this.master = master;
 		try {
 	         // Construct a datagram socket and bind it to any available 
@@ -65,7 +66,7 @@ public class SchedulerRead implements Runnable{
 	      int floorBut = Integer.parseInt(info[1]);
 	      int instructionID = Integer.parseInt(info[2]);
 	      Instruction instruction = new Instruction(floor, floorBut, instructionID);
-	      inputF.add(instruction);
+	      master.inputF.add(instruction);
 	      
 	}
 

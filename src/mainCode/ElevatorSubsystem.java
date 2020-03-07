@@ -72,8 +72,7 @@ public class ElevatorSubsystem implements Runnable {
 		doorOpen = new boolean[numCars];
 		
 		
-			ElevatorRead reader;
-			reader = new ElevatorRead(this);
+			ElevatorRead reader = new ElevatorRead(this);
 			Thread tReader = new Thread(reader);
 			tReader.start();
 		

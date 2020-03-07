@@ -23,8 +23,8 @@ public class Scheduler implements Runnable {
 	private SchedulerState state;
 	private int numFloors;
 	private boolean hasInit = false;
-	DatagramPacket sendPacket, receivePacket;
-	DatagramSocket receiveSocket;
+	DatagramPacket sendPacket;
+	
 
 	/**
 	 * Public constructor for class scheduler
@@ -33,15 +33,7 @@ public class Scheduler implements Runnable {
 	 * @throws IOException if file string cannot be accessed
 	 */
 	public Scheduler() {
-		try {
-	         // Construct a datagram socket and bind it to any available 
-	         // port on the local host machine. This socket will be used to
-	         // send and receive UDP Datagram packets.
-	         receiveSocket = new DatagramSocket(40979);
-	      } catch (SocketException se) {   // Can't create the socket.
-	         se.printStackTrace();
-	         System.exit(1);
-	      }
+		
 		Properties prop = new Properties();
 		FileInputStream ip;
 		try {
@@ -68,6 +60,10 @@ public class Scheduler implements Runnable {
 			cars[i].setDir(-1);
 			outSwitch[i] = false;
 		}
+		SchedulerReadElevator eReader = new SchedulerReadElevator(this);
+		Thread tEReader = new Thread(eReader);
+		tEReader.start();
+		
 		state = SchedulerState.WAITING;
 
 	}
@@ -420,6 +416,7 @@ public class Scheduler implements Runnable {
 	 *
 	 * @throws IOException interrupts once waiting is finished
 	 */
+	/*
 	public void readFromFloor() {
 		byte data[] = new byte[1000];
 	      receivePacket = new DatagramPacket(data, data.length);
@@ -457,6 +454,7 @@ public class Scheduler implements Runnable {
 	      inputF.add(instruction);
 	      
 	}
+	*/
 
 	/**
 	 * Writes instructions to the floor 
