@@ -23,6 +23,12 @@ public class ElevatorSubsystem implements Runnable {
 	private boolean[] doorOpen;
 	Properties prop = new Properties();
 
+	/**
+	 * Public constructor for class elevator subsystem
+	 *
+	 * @param scheduler scheduler used to schedule the relevant elevators
+	 * @param numCars car number
+	 */
 	public ElevatorSubsystem(Scheduler scheduler) {
 		this.scheduler = scheduler;
 		FileInputStream ip;
@@ -46,14 +52,22 @@ public class ElevatorSubsystem implements Runnable {
 		doorOpen = new boolean[numCars];
 		state = ElevatorState.WAITING;
 	}
-
+	
+	/**
+	 * Gets the car number of the elevator
+	 *
+	 * @return car number
+	 */
 	public int getCarNum() {
 		return this.numCars;
 	}
 
 	/**
-	 * @param carID ID from 0 to carNum-1
-	 * @return
+	 * Gets the car ID of the elevator
+	 *
+	 * @param carID carID of the elevator ranging from 0 to carNum-1
+	 * @return the Car of the relevant elevator
+	 * @throws IndexOutOfBoundsException if carNum not within range
 	 */
 	public Car getCar(int carID) {
 		if (carID < 0 || carID >= numCars)
@@ -62,6 +76,13 @@ public class ElevatorSubsystem implements Runnable {
 		return this.cars[carID];
 	}
 
+	/**
+	 * Reads the inputted .txt file
+	 *
+	 * @return the inputted data obtained from the .txt file
+	 * @throws FileNotFoundException if the .txt cannot be found
+	 * @throws IOException if the .txt file cannot be read
+	 */
 	public static List<String> readInputFile() {
 		// Integer myInt = null;
 		List<String> inputData = new ArrayList<String>();
@@ -94,6 +115,11 @@ public class ElevatorSubsystem implements Runnable {
 		
 	}
 	
+	/**
+	 * Runs the elevator subsystem
+	 *
+	 * @throws InterruptedException if thread is inaccessible
+	 */
 	public void run() {
 		while (true) {
 			synchronized (scheduler) {
