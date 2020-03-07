@@ -1,13 +1,13 @@
 Elevator Scheduling System
 
-Group 1 Submission for 3303 Project Iteration 2
+Group 1 Submission for 3303 Project Iteration 3
 
 Installation
-	All java files and the .csv file must be included in the same project to ensure proper communication
+	All java files and the .txt file must be included in the same project to ensure proper communication
 	
 To Run
 	To begin running the program, run the start class and it will begin all threads
-	The csv file can be filled with additional instructions for the program
+	The txt file can be filled with additional instructions for the program
 
 Tests
 	- The first test file is TestElevator, which can be run by right-clicking on the file and selecting
