@@ -26,6 +26,7 @@ public class Scheduler implements Runnable {
 	private int numFloors;
 	private boolean hasInit = false;
 	DatagramPacket sendPacket;
+	DatagramSocket sendSocket;
 	
 
 	/**
@@ -61,6 +62,12 @@ public class Scheduler implements Runnable {
 			cars[i].setCurrFloor(1);
 			cars[i].setDir(-1);
 			outSwitch[i] = false;
+		}
+		try {
+			sendSocket = new DatagramSocket();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		SchedulerReadFloor fReader = new SchedulerReadFloor(this);
 		Thread tFReader = new Thread(fReader);
@@ -491,7 +498,7 @@ public class Scheduler implements Runnable {
 		// Send the datagram packet to the server via the send/receive socket.
 
 		try {
-			sendElevatorSocket.send(sendPacket);
+			sendSocket.send(sendPacket);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);

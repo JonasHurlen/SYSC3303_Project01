@@ -201,13 +201,13 @@ public class ElevatorSubsystem implements Runnable {
 			System.exit(1);
 		}
 
-		System.out.println("Elevator : Sending packet:");
-		System.out.println("To Scheduler : " + sendPacket.getAddress());
-		System.out.println("Destination host port: " + sendPacket.getPort());
+		//System.out.println("Elevator : Sending packet:");
+		//System.out.println("To Scheduler : " + sendPacket.getAddress());
+		//System.out.println("Destination host port: " + sendPacket.getPort());
 		int len = sendPacket.getLength();
-		System.out.println("Length: " + len);
-		System.out.print("Containing: ");
-		System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
+		//System.out.println("Length: " + len);
+		//System.out.print("Containing: ");
+		//System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
 
 		// Send the datagram packet to the server via the send/receive socket.
 
@@ -246,7 +246,7 @@ public class ElevatorSubsystem implements Runnable {
 				if (!outputE.isEmpty()) {
 					// System.out.println("Elevator Reading");
 					state = ElevatorState.BUSY;
-					Instruction order = scheduler.outputE.pop();
+					Instruction order = outputE.pop();
 					//Instruction order = receiveScheduler();
 					System.out.println(order.getCarCur() + " " + order.getCarNum() + " " + order.getInstructionID());
 					int type = order.getType();

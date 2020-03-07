@@ -34,13 +34,13 @@ public class FloorSubsystem implements Runnable {
 			System.exit(1);
 		}
 
-		System.out.println("Floor: Sending packet:");
-		System.out.println("To host: " + sendPacket.getAddress());
-		System.out.println("Destination host port: " + sendPacket.getPort());
+		//System.out.println("Floor: Sending packet:");
+		//System.out.println("To host: " + sendPacket.getAddress());
+		//System.out.println("Destination host port: " + sendPacket.getPort());
 		int len = sendPacket.getLength();
-		System.out.println("Length: " + len);
-		System.out.print("Containing: ");
-		System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
+		//System.out.println("Length: " + len);
+		//System.out.print("Containing: ");
+		//System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
 
 		// Send the datagram packet to the server via the send/receive socket.
 
@@ -51,7 +51,7 @@ public class FloorSubsystem implements Runnable {
 			System.exit(1);
 		}
 
-		System.out.println("Floor: Packet sent.\n");
+		//System.out.println("Floor: Packet sent.\n");
 		//scheduler.readFromFloor();
 
 	}
@@ -101,7 +101,7 @@ public class FloorSubsystem implements Runnable {
 	
 	
 	public void startReading() {
-		int numberOfLines = 4;
+		int numberOfLines = 1;
 		Instruction inst;
 		for (int i = 0; i < numberOfLines; i++) {
 			inst = readInputFile(i);
