@@ -12,7 +12,14 @@ public class FloorSubsystem implements Runnable {
 	private Scheduler scheduler;
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket sendReceiveSocket;
-
+	
+	/**
+	 * Sends instructions betwen subsystems
+	 *
+	 * @param inst instruction to send
+	 * @throws UnknownHostException if the host cannot be located
+	 * @throws IOException if the socket cannot be read from
+	 */
 	public void send(Instruction inst) {
 		String first = ((Integer) inst.getFloor()).toString();
 		String second = ((Integer) inst.getFloorBut()).toString();
@@ -54,6 +61,11 @@ public class FloorSubsystem implements Runnable {
 		
 	}
 
+	/**
+	 * Runs the floor subsystem
+	 *
+	 * @throws InterruptedException if thread is inaccessible
+	 */
 	public void run() {
 
 		while (true) {
@@ -78,10 +90,11 @@ public class FloorSubsystem implements Runnable {
 	}
 	
 	/**
- 	* FloorSubsystem Constructor
- 	* @param scheduler
- 	* @param floorNumber
- 	*/
+	 * Public constructor for class floor subsystem
+	 *
+	 * @param scheduler scheduler used to schedule the relevant elevators
+	 * @param floorNumber floor number
+	 */
 	public FloorSubsystem(Scheduler scheduler) {
 		this.scheduler = scheduler;
 		try {
@@ -97,7 +110,10 @@ public class FloorSubsystem implements Runnable {
 
 	}
 	
-	
+	/**
+	 * Starts reading the .txt file
+	 *
+	 */
 	public void startReading() {
 		int numberOfLines = 4;
 		Instruction inst;
@@ -112,10 +128,12 @@ public class FloorSubsystem implements Runnable {
 	
 	
 	/**
-	 * readInputFile() method will read in events from csv file to be sent to the scheduler 
-	 * @param String that is the name of the csv file
-	 * @return Instruction 
-	 */	
+	 * Reads in events from .txt file to be sent to the scheduler 
+	 *
+	 * @return instructions obtained from .txt file
+	 * @throws FileNotFoundException if the .txt file cannot be found
+	 * @throws IOException if the input data cannot be read from
+	 */
 	public static Instruction readInputFile(int desiredLine) {
 		
 		//Integer myInt = null;
