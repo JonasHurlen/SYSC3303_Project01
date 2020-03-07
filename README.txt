@@ -33,4 +33,4 @@ Credits & Contributions
 	Abdelrahman Darwish:  readInputFile method() to read input from CSV file
 	Michael Fairbairn: JUnit Testing
 	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
-	Krishang Karir: Constructing class diagrams, sequence diagrams and state machine diagrams and documentation
+	Krishang Karir: Constructing class diagrams, sequence diagrams and state machine diagrams, javadoc comments, and documentation
