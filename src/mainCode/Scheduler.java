@@ -156,21 +156,22 @@ public class Scheduler implements Runnable {
 					Instruction order = inputE.pop();
 					int carCurr = order.getCarNum();
 					addOrder(orders[carCurr], order);
-					System.out.println("Scheduler read from inputE, Button pressed " + order.getCarBut());
+					//System.out.println("Scheduler read from inputE, Button pressed " + order.getCarBut());
 				}
 				
 				for (int carCurr = 0; carCurr < outSwitch.length; carCurr++) {
 					if (!outSwitch[carCurr] && !orders[carCurr].isEmpty()) {
-						System.out.println("Entered switch");
+						//System.out.println("Entered switch");
 						Instruction currOrder = orders[carCurr].pop();
 						outSwitch[carCurr] = true;
 						cars[carCurr].setCurrFloor(currOrder.getCarCur());
 						cars[carCurr].setDir(currOrder.getFloorBut());
 						// System.out.println("Car " + carCurr + "'s order is " );
 
-						System.out.println("Order type:" + currOrder.getType());
+						//System.out.println("Order type:" + currOrder.getType());
 						switch (currOrder.getType()) {
 						case 0:
+							//System.out.println("Made it into case 0");
 							// If the car is idle and has not received passengers, initiate the open
 							// procedure
 							if (!currOrder.getHasPass()) {
@@ -207,6 +208,7 @@ public class Scheduler implements Runnable {
 
 						case 1:
 							// door has opened
+							//System.out.println("Made it into case 1 ");
 							if (currOrder.getHasPass()) {
 								if (!orders[carCurr].isEmpty()) {
 									Instruction next = orders[carCurr].peek();
@@ -240,6 +242,7 @@ public class Scheduler implements Runnable {
 							break;
 						case 2:
 							// door is open, loading
+							//System.out.println("Made it into case 2 ");
 							if (!currOrder.getHasPass()) {
 								currOrder.setHasPass(true);
 								currOrder.setType(3);
@@ -251,11 +254,12 @@ public class Scheduler implements Runnable {
 							break;
 						case 3:
 							// door has closed
+							//System.out.println("Made it into case 3 ");
 							currOrder.setType(0);
 							writeToElevator(currOrder);
 							break;
 						case 4:
-							System.out.println("Made it into case 4 ");
+							//System.out.println("Made it into case 4 " + currOrder.getFloor() + ", " + currOrder.getCarCur());
 							if (!currOrder.getHasPass()) {
 								if (currOrder.getFloor() == currOrder.getCarCur()) {
 									currOrder.setType(0);
@@ -353,7 +357,7 @@ public class Scheduler implements Runnable {
 					if (carFloor > floor) {
 						if (distance < Math.abs(carFloor - floor) || distance == -1) {
 							distance = Math.abs(carFloor - floor);
-							System.out.println("Dir 0, " + distance);
+							//System.out.println("Dir 0, " + distance);
 							// System.out.println("?");
 							carNum = car.getId();
 						}
@@ -363,7 +367,7 @@ public class Scheduler implements Runnable {
 					if (carFloor < floor) {
 						if (distance < Math.abs(carFloor - floor) || distance == -1) {
 							distance = Math.abs(carFloor - floor);
-							System.out.println("Dir 1, " + distance);
+							//System.out.println("Dir 1, " + distance);
 							carNum = car.getId();
 						}
 					}
@@ -480,7 +484,7 @@ public class Scheduler implements Runnable {
 		String fourth = ((Integer) ins.getType()).toString();
 		
 		String message = first + " " + second + " " + third + " " + fourth;
-		
+		//System.out.println("Scheduler message to elevator: " + message);
 		byte[] msg = message.getBytes();
 
 		try {

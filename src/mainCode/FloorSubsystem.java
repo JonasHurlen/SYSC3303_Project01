@@ -139,7 +139,7 @@ public class FloorSubsystem implements Runnable {
 			String[] info = myLine.split(" ");
 			instruction = new Instruction(info[0],
 					Integer.parseInt(info[1]), Integer.parseInt(info[2]), desiredLine);
-			System.out.println(info[0]);
+			//System.out.println(info[0]);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

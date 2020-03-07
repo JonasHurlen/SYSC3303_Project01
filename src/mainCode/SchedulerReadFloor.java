@@ -29,7 +29,6 @@ public class SchedulerReadFloor implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true) {
-			System.out.println("ReadFloorLoop");
 			readFromFloor();
 		}
 	}

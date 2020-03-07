@@ -187,7 +187,7 @@ public class ElevatorSubsystem implements Runnable {
 		String fourth = ((Integer) inst.getType()).toString();
 		String fifth = ((Integer) inst.getCarBut()).toString();
 		String message = first + " " + second + " " + third + " " + fourth + " " + fifth;
-		System.out.println(message);
+		//System.out.println("Elevator sends scheduler " + message);
 		byte[] msg = message.getBytes();
 
 		try {
@@ -210,7 +210,6 @@ public class ElevatorSubsystem implements Runnable {
 
 		try {
 			sendSocket.send(sendPacket);
-			System.out.println("Elevator sent");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -246,7 +245,7 @@ public class ElevatorSubsystem implements Runnable {
 					state = ElevatorState.BUSY;
 					Instruction order = outputE.pop();
 					//Instruction order = receiveScheduler();
-					System.out.println(order.getCarCur() + " " + order.getCarNum() + " " + order.getInstructionID());
+					//System.out.println(order.getCarCur() + " " + order.getCarNum() + " " + order.getInstructionID());
 					int type = order.getType();
 					int car = order.getCarNum();
 					switch (type) {
@@ -303,7 +302,7 @@ public class ElevatorSubsystem implements Runnable {
 						order.setCarCur(cars[order.getCarNum()].getCurrFloor());
 						System.out.println("Car " + order.getCarNum() + " moved up to " + cars[car].getCurrFloor());
 						try {
-							Thread.sleep(1);
+							Thread.sleep(100);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}

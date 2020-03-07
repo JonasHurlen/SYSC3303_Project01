@@ -59,6 +59,7 @@ public class ElevatorRead implements Runnable {
 			int carNum = Integer.parseInt(info[1]);
 			int carCur = Integer.parseInt(info[2]);
 			int type = Integer.parseInt(info[3]);
+			//System.out.println("Elevator recieved " + carCur + ", " + type);
 			master.outputE.add(new Instruction(instructionID, carNum, carCur, type));
 			//return new Instruction(instructionID, carNum, carCur, type);
 	    }

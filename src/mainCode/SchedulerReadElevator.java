@@ -61,7 +61,7 @@ public class SchedulerReadElevator implements Runnable{
 		int type = Integer.parseInt(info[3]);
 		int carBut = Integer.parseInt(info[4]);
 		
-		System.out.println(instructionID + ", " + carNum + ", " + carCur + ", " + type + ", " + carBut);
+		//System.out.println(instructionID + ", " + carNum + ", " + carCur + ", " + type + ", " + carBut);
 		//Instruction instruction = new Instruction(instructionID, carNum, carCur, type);
 		Instruction incoming = master.pending[carNum];
 		if(carBut != -1) {
@@ -69,7 +69,7 @@ public class SchedulerReadElevator implements Runnable{
 		}
 		
 		incoming.setType(type);
-		
+		incoming.setCarCur(carCur);
 		
 		
 		
@@ -82,7 +82,6 @@ public class SchedulerReadElevator implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true) {
-			System.out.println("ReadElevatorLoop");
 			readFromElevator();
 		}
 		
