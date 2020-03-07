@@ -12,11 +12,22 @@ public class Scheduler implements Runnable {
 	private Car[] cars;
 	private SchedulerState state;
 
+	/**
+	 * Public constructor for class scheduler
+	 *
+	 * @param numCars number of cars
+	 * @param numCars number of floors
+	 */
 	public Scheduler(int numCars, int numFloors) {
 		orders = new LinkedList[numCars];
 		state = SchedulerState.WAITING;
 	}
-
+	
+	/**
+	 * Runs the scheduler 
+	 *
+	 * @throws InterruptedException if thread is inaccessible
+	 */
 	@Override
 	public void run() {
 
@@ -125,7 +136,11 @@ public class Scheduler implements Runnable {
 		}
 
 	}
-
+	
+	/**
+	 * Prints messages to the console 
+	 *
+	 */
 	public void console(Object in) {
 		System.out.println(in);
 	}
