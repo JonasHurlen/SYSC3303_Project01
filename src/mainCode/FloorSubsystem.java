@@ -52,7 +52,7 @@ public class FloorSubsystem implements Runnable {
 
 	
 	
-	public static Instruction readInputFile() {
+	public static Instruction readInputFile(int desiredLine) {
 		//Integer myInt = null;
 		List<String>inputData = new ArrayList<String>();
 		FileReader input = null;
@@ -64,23 +64,27 @@ public class FloorSubsystem implements Runnable {
         	e.printStackTrace();
         	
         	 }
-        BufferedReader buff=new BufferedReader(input);
+        BufferedReader buff = new BufferedReader(input);
         String myLine =null;
         Instruction instruction = null;
         
       try {
-        	while((myLine = buff.readLine()) !=null){
+    	  		for (int i = 0; i < desiredLine; i++) {
+    	  			myLine = buff.readLine();
+    	  		}
+        		myLine = buff.readLine();
         		String[] info = myLine.split(" ");
         		String destinationFloor = info[3]; 
         		inputData.add(destinationFloor);
         		//System.out.println((Integer.parseInt(x.get(0))));
         		instruction = new Instruction(Integer.parseInt(info[1]), Integer.parseInt(info[2]), lineNumber);
-        		lineNumber++;
-        }
+        		
+        		
+        
         	
         	
         	
-      }
+      	}
         	catch(IOException e ) {
         		e.printStackTrace();
         	}

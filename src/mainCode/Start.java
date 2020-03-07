@@ -8,11 +8,11 @@ public class Start {
 		FloorSubsystem myFloor = new FloorSubsystem(scheduler, 2);
 		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler);
 		
-		int numberOfLines = 2;
+		int numberOfLines = 4;
 		Instruction inst;
 		
 		for (int i = 0; i < numberOfLines; i++) {
-			inst = myFloor.readInputFile();
+			inst = myFloor.readInputFile(i);
 			scheduler.inputF.add(inst);
 		}
 		//Instruction inst2 = myFloor.readInputFile();
