@@ -94,8 +94,8 @@ public class FloorSubsystem implements Runnable {
 	 * @param scheduler scheduler used to schedule the relevant elevators
 	 * @param floorNumber floor number
 	 */
-	public FloorSubsystem(Scheduler scheduler) {
-		this.scheduler = scheduler;
+	public FloorSubsystem() {
+	//	this.scheduler = scheduler;
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
@@ -157,5 +157,13 @@ public class FloorSubsystem implements Runnable {
 
 		return instruction;
 	}
+	   public static void main( String args[] ) {
+		   FloorSubsystem f = new FloorSubsystem();
+		   f.startReading();
+		   Thread tFloor = new Thread(f);
+		   tFloor.start();
 
+		   
+
+	   }
 }
