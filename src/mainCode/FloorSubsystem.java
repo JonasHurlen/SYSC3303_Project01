@@ -53,7 +53,7 @@ public class FloorSubsystem implements Runnable {
 		}
 
 		System.out.println("Floor: Packet sent.\n");
-		scheduler.readFromFloor();
+		
 
 		// int floor, int floorBut, int instructionID
 		// ADD TIMESTAMP

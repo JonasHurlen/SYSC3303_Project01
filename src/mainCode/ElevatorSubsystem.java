@@ -131,7 +131,7 @@ public class ElevatorSubsystem implements Runnable {
 	public Instruction receiveScheduler() {
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
-		System.out.println("Scheduler: Waiting for Packet.\n");
+		System.out.println("Elevator: Waiting for Packet.\n");
 
 		// Block until a datagram packet is received from receiveSocket.
 		try {

@@ -47,6 +47,13 @@ public class Instruction {
 		this.instructionID = instructionID;
 	}
 	
+	public Instruction(int instructionID, int carNum, int carCur, int type) { 
+		this.type = type; 
+		this.carNum =carNum; 
+		this.carCur =carCur; 
+		this.instructionID = instructionID; 
+	} 
+	
 	/**
 	 * Gets the time
 	 *

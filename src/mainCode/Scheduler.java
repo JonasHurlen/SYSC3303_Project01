@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Properties;
@@ -108,14 +110,14 @@ public class Scheduler implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					// this.readFromFloor();
+				
 				}
 
 				if (!this.inputF.isEmpty()) {
 					// Takes information from floor and sends it through to the elevators to receive
 					// info
 					state = SchedulerState.BUSY;
-					Instruction instruction = inputF.pop();
+					Instruction instruction = readFromFloor();
 
 					if (instruction.getFloorBut() == 0) {
 						console("Floor " + instruction.getFloor() + " requests down");
@@ -135,7 +137,7 @@ public class Scheduler implements Runnable {
 					// Receives complete instruction and then sorts it to an elevator
 					// Stuff to figure out which elevator it goes to
 					state = SchedulerState.BUSY;
-					Instruction order = inputE.pop();
+					Instruction order = readFromElevator();
 					int carCurr = order.getCarNum();
 					addOrder(orders[carCurr], order);
 
@@ -368,11 +370,11 @@ public class Scheduler implements Runnable {
 	 * Reads instructions from the elevator 
 	 *
 	 */
-	private void readFromElevator() {
+	private Instruction readFromElevator() {
 
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
-		System.out.println("Scheduler: Waiting for Packet.\n");
+		System.out.println("Scheduler: Waiting for Packet from Elevator.\n");
 
 		// Block until a datagram packet is received from receiveSocket.
 		try {
@@ -408,11 +410,18 @@ public class Scheduler implements Runnable {
 		
 		Instruction instruction = new Instruction(instructionID, carNum, carCur, type);
 		instruction.setCarBut(carBut);
+		
+		
+		
 		Instruction incoming = pending[carNum];
 		
-		inputE.add(incoming);
+		
+		
+		
+		//inputE.add(incoming);
 		outSwitch[incoming.getCarNum()] = false;
 		
+		return incoming;
 
 	}
 	
@@ -425,7 +434,42 @@ public class Scheduler implements Runnable {
 		// reading stuff
 		// System.out.println("Write to elevator");
 		outputE.add(ins);
+		String first = ((Integer) ins.getInstructionID()).toString();
+		String second = ((Integer) ins.getCarNum()).toString();
+		String third = ((Integer) ins.getCarCur()).toString();
+		String fourth = ((Integer) ins.getType()).toString();
+		
+		String message = first + " " + second + " " + third + " " + fourth;
+		
+		byte[] msg = message.getBytes();
 
+		try {
+			sendPacket = new DatagramPacket(msg, msg.length,
+			InetAddress.getLocalHost(), 38594);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("Scheduler : Sending packet:");
+		System.out.println("To Elevator : " + sendPacket.getAddress());
+		System.out.println("Destination host port: " + sendPacket.getPort());
+		int len = sendPacket.getLength();
+		System.out.println("Length: " + len);
+		System.out.print("Containing: ");
+		System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
+
+		// Send the datagram packet to the server via the send/receive socket.
+
+		try {
+			sendElevatorSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("SchedulerSubsystem: Packet sent.\n");
+	
 		pending[ins.getCarNum()] = ins;
 	}
 
@@ -435,10 +479,10 @@ public class Scheduler implements Runnable {
 	 *
 	 * @throws IOException interrupts once waiting is finished
 	 */
-	public void readFromFloor() {
+	public Instruction readFromFloor() {
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
-		System.out.println("Scheduler: Waiting for Packet.\n");
+		System.out.println("Scheduler: Waiting for Packet from Floor.\n");
 
 		// Block until a datagram packet is received from receiveSocket.
 		try {
@@ -468,8 +512,8 @@ public class Scheduler implements Runnable {
 		int floor = Integer.parseInt(info[0]);
 		int floorBut = Integer.parseInt(info[1]);
 		int instructionID = Integer.parseInt(info[2]);
-		Instruction instruction = new Instruction(floor, floorBut, instructionID);
-		inputF.add(instruction);
+		return new Instruction(floor, floorBut, instructionID);
+		
 
 	}
 
