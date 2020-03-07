@@ -1,4 +1,5 @@
 package mainCode;
+
 import java.io.*;
 import java.io.*;
 import java.net.*;
@@ -27,38 +28,36 @@ public class FloorSubsystem implements Runnable {
 		String message = first + " " + second + " " + third;
 		byte[] msg = message.getBytes();
 
-	      try {
-	         sendPacket = new DatagramPacket(msg, msg.length,
-	                                         InetAddress.getLocalHost(), 40979);
-	      } catch (UnknownHostException e) {
-	         e.printStackTrace();
-	         System.exit(1);
-	      }
-	      
-	      System.out.println("Floor: Sending packet:");
-	      System.out.println("To host: " + sendPacket.getAddress());
-	      System.out.println("Destination host port: " + sendPacket.getPort());
-	      int len = sendPacket.getLength();
-	      System.out.println("Length: " + len);
-	      System.out.print("Containing: ");
-	      System.out.println(new String(sendPacket.getData(),0,len)); // or could print "s"
+		try {
+			sendPacket = new DatagramPacket(msg, msg.length, InetAddress.getLocalHost(), 40979);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 
-	      // Send the datagram packet to the server via the send/receive socket. 
+		System.out.println("Floor: Sending packet:");
+		System.out.println("To host: " + sendPacket.getAddress());
+		System.out.println("Destination host port: " + sendPacket.getPort());
+		int len = sendPacket.getLength();
+		System.out.println("Length: " + len);
+		System.out.print("Containing: ");
+		System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
 
-	      try {
-	         sendReceiveSocket.send(sendPacket);
-	      } catch (IOException e) {
-	         e.printStackTrace();
-	         System.exit(1);
-	      }
+		// Send the datagram packet to the server via the send/receive socket.
 
-	      System.out.println("Floor: Packet sent.\n");
-	      scheduler.readFromFloor();
+		try {
+			sendReceiveSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 
+		System.out.println("Floor: Packet sent.\n");
 		
-		//int floor, int floorBut, int instructionID
+
+		// int floor, int floorBut, int instructionID
 		// ADD TIMESTAMP
-		
+
 	}
 
 	/**
@@ -88,7 +87,7 @@ public class FloorSubsystem implements Runnable {
 		}
 
 	}
-	
+
 	/**
 	 * Public constructor for class floor subsystem
 	 *
@@ -98,77 +97,65 @@ public class FloorSubsystem implements Runnable {
 	public FloorSubsystem(Scheduler scheduler) {
 		this.scheduler = scheduler;
 		try {
-	         // Construct a datagram socket and bind it to any available 
-	         // port on the local host machine. This socket will be used to
-	         // send and receive UDP Datagram packets.
-	         sendReceiveSocket = new DatagramSocket();
-	      } catch (SocketException se) {   // Can't create the socket.
-	         se.printStackTrace();
-	         System.exit(1);
-	      }
-	
+			// Construct a datagram socket and bind it to any available
+			// port on the local host machine. This socket will be used to
+			// send and receive UDP Datagram packets.
+			sendReceiveSocket = new DatagramSocket();
+		} catch (SocketException se) { // Can't create the socket.
+			se.printStackTrace();
+			System.exit(1);
+		}
 
 	}
 	
-	/**
-	 * Starts reading the .txt file
-	 *
-	 */
+	
 	public void startReading() {
 		int numberOfLines = 4;
 		Instruction inst;
 		for (int i = 0; i < numberOfLines; i++) {
 			inst = readInputFile(i);
 			send(inst);
-		//scheduler.inputF.add(inst);			
+			// scheduler.inputF.add(inst);
 		}
-		
-	}	
-	
-	
-	
-	/**
-	 * Reads in events from .txt file to be sent to the scheduler 
-	 *
-	 * @return instructions obtained from .txt file
-	 * @throws FileNotFoundException if the .txt file cannot be found
-	 * @throws IOException if the input data cannot be read from
-	 */
-	public static Instruction readInputFile(int desiredLine) {
-		
-		//Integer myInt = null;
-		List<String>inputData = new ArrayList<String>();
-		FileReader input = null;
-        try {
-         input = new FileReader("inputFile.txt");
- 	        }
-        catch(FileNotFoundException e) {
-        	e.printStackTrace();
-        	
-        	 }
-        BufferedReader buff = new BufferedReader(input);
-        String myLine =null;
-        Instruction instruction = null;
-        
-      try {
-    	  		for (int i = 0; i < desiredLine; i++) {
-    	  			myLine = buff.readLine();
-    	  		}
-        		myLine = buff.readLine();
-        		String[] info = myLine.split(" ");
-        		String destinationFloor = info[3]; 
-        		inputData.add(destinationFloor);
-        		//System.out.println((Integer.parseInt(x.get(0))));
-        		instruction = new Instruction(Integer.parseInt(info[1]), Integer.parseInt(info[2]), desiredLine);
-        	
-      	}
-        	catch(IOException e ) {
-        		e.printStackTrace();
-        	}
-       
-      return instruction;
+
 	}
 
-	
+	/**
+	 * readInputFile() method will read in events from csv file to be sent to the scheduler 
+	 * @param String that is the name of the csv file
+	 * @return Instruction 
+	 */	
+	public static Instruction readInputFile(int desiredLine) {
+
+		// Integer myInt = null;
+		List<String> inputData = new ArrayList<String>();
+		FileReader input = null;
+		try {
+			input = new FileReader("inputFile.txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+
+		}
+		BufferedReader buff = new BufferedReader(input);
+		String myLine = null;
+		Instruction instruction = null;
+
+		try {
+			for (int i = 0; i < desiredLine; i++) {
+				myLine = buff.readLine();
+			}
+			myLine = buff.readLine();
+			String[] info = myLine.split(" ");
+			String destinationFloor = info[3];
+			inputData.add(destinationFloor);
+			// System.out.println((Integer.parseInt(x.get(0))));
+			instruction = new Instruction(Integer.parseInt(info[1]), Integer.parseInt(info[2]), desiredLine);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return instruction;
+	}
 
 }

@@ -1,4 +1,5 @@
 package mainCode;
+
 import java.sql.Timestamp;
 
 public class Instruction {
@@ -45,6 +46,13 @@ public class Instruction {
 		this.floorBut = floorBut;
 		this.instructionID = instructionID;
 	}
+	
+	public Instruction(int instructionID, int carNum, int carCur, int type) { 
+		this.type = type; 
+		this.carNum =carNum; 
+		this.carCur =carCur; 
+		this.instructionID = instructionID; 
+	} 
 	
 	/**
 	 * Gets the time
@@ -163,6 +171,7 @@ public class Instruction {
 	public void setCarNum(int CarNum) {
 		this.carNum = CarNum;
 	}
+
 	/*
 	public int getfloorOrder() {
 		return floorOrder;
@@ -193,12 +202,8 @@ public class Instruction {
 	}
 	
 	/*
-	public Car[] getCarPoll() {
-		return carPoll;
-	}
-	
-	public void setCarPoll(Car[] carPoll) {
-		this.carPoll = carPoll;
-	}
-	*/
+	 * public Car[] getCarPoll() { return carPoll; }
+	 * 
+	 * public void setCarPoll(Car[] carPoll) { this.carPoll = carPoll; }
+	 */
 }
