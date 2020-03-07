@@ -9,7 +9,7 @@ public class Car {
 		private int direction = 0;
 	
 		/**
-		 * Public constructor for class Car
+		 * Public constructor for class car
 		 *
 		 * @param id car id
 		 */
