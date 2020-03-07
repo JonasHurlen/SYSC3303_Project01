@@ -7,12 +7,14 @@ public class Start {
 
 		FloorSubsystem myFloor = new FloorSubsystem(scheduler, 2);
 		Instruction inst = myFloor.readInputFile();
+		//Instruction inst2 = myFloor.readInputFile();
 		
 		
 		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler);
 		//Temp until file to elevator is implemented
 		//temp until FloorSub is integrated
 		scheduler.inputF.add(inst);
+		//scheduler.inputF.add(inst2);
 		//elevator1.button = elevator1.readInputFile("inputFile.csv"); // final destination
 		
 		Thread tElevator1 = new Thread(elevator1);

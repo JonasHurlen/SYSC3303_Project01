@@ -39,8 +39,8 @@ public class ElevatorSubsystem implements Runnable {
 		cars = new Car[numCars];
 		for (int i = 0; i < numCars; i++) {
 			cars[i] = new Car(i);
-			cars[i].setCurrFloor(4);
-			cars[i].setDir(0);
+			cars[i].setCurrFloor(1);
+			cars[i].setDir(-1);
 		}
 		elevatorLamp = new boolean[numCars];
 		doorOpen = new boolean[numCars];
@@ -110,19 +110,26 @@ public class ElevatorSubsystem implements Runnable {
 				}
 				// if there is something in the incoming instructions
 				if (!scheduler.outputE.isEmpty()) {
+					//System.out.println("Elevator Reading");
 					state = ElevatorState.BUSY;
 					Instruction order = scheduler.outputE.pop();
 					int type = order.getType();
-					int car = order.getCarCur();
+					int car = order.getCarNum();
 					switch (type) {
 					case 0:
 						// Stop/idle
-						scheduler.console(car + " is on " + order.getFloor());
+						scheduler.console(car + " is on " + order.getCarCur());
 						scheduler.inputE.add(order);
 						break;
 					case 1:
-						System.out.println("Car " + car + " Doors Opened on floor " + order.getFloor());
+						System.out.println("Car " + car + " Doors Opened on floor " + order.getCarCur());
 						doorOpen[car] = true;
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						scheduler.inputE.add(order);
 						break;
 					case 2:
@@ -138,11 +145,23 @@ public class ElevatorSubsystem implements Runnable {
 							order.setCarBut(Integer.parseInt(x.get(i)));
 						}
 						scheduler.console("Doors are open, someone gets on and requests floor " + order.getCarBut());
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						scheduler.inputE.add(order);
 						break;
 
 					case 3:
-						System.out.println("Car " + car + ", doors closed on floor " + order.getFloor());
+						System.out.println("Car " + car + ", doors closed on floor " + order.getCarCur());
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						doorOpen[car] = false;
 						scheduler.inputE.add(order);
 						break;
@@ -152,6 +171,12 @@ public class ElevatorSubsystem implements Runnable {
 						cars[car].setCurrFloor(cars[car].getCurrFloor() + 1);
 						order.setCarCur(cars[order.getCarNum()].getCurrFloor());
 						System.out.println("Car " + order.getCarNum() + " moved up to " + cars[car].getCurrFloor());
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						scheduler.inputE.add(order);
 						break;
 					case 5:
@@ -160,13 +185,25 @@ public class ElevatorSubsystem implements Runnable {
 						cars[car].setCurrFloor(cars[car].getCurrFloor() - 1);
 						order.setCarCur(cars[order.getCarNum()].getCurrFloor());
 						System.out.println("Car " + order.getCarNum() + " moved down to " + cars[car].getCurrFloor());
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						scheduler.inputE.add(order);
 						break;
 
 				
 						
 					case 6:
-						System.out.println("Car " + car + ", doors closed on floor " + order.getFloor());
+						System.out.println("Car " + car + ", doors closed on floor " + order.getCarCur());
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						doorOpen[car] = false;
 						scheduler.inputE.add(order);
 						break;

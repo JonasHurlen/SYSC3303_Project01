@@ -3,6 +3,7 @@ package mainCode;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Properties;
 
@@ -10,11 +11,11 @@ public class Scheduler implements Runnable {
 
 	LinkedList<Instruction> inputF = new LinkedList<Instruction>();// input from floor
 	LinkedList<Instruction> inputE = new LinkedList<Instruction>();// input from elevator
-	LinkedList<Instruction> pendingInstruction = new LinkedList<Instruction>();// input from elevator
+	Instruction[] pending;
 	LinkedList<Instruction> outputE = new LinkedList<Instruction>();// output to elevator
 	LinkedList<Instruction> acknowledged = new LinkedList<Instruction>();// output to floor
 	public LinkedList<Instruction>[] orders;
-	private boolean[] outSwitch;
+	private Boolean[] outSwitch;
 	private Car[] cars;
 	private SchedulerState state;
 	private int numFloors;
@@ -28,6 +29,7 @@ public class Scheduler implements Runnable {
 			prop.load(ip);
 			orders = new LinkedList[Integer.parseInt(prop.getProperty("CARS"))];
 			this.numFloors = Integer.parseInt(prop.getProperty("FLOORS"));
+			pending = new Instruction[Integer.parseInt(prop.getProperty("CARS"))];
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -35,18 +37,28 @@ public class Scheduler implements Runnable {
 		// sets initial position of all cars
 		for (int i = 0; i < orders.length; i++) {
 			orders[i] = new LinkedList<Instruction>();
-			// orders[i].add(new Instruction(1, 0));
-			inputE.add(new Instruction(1, 0));
+			// addOrder(orders[i],new Instruction(1, 0));
+			// inputE.add(new Instruction(1, 0));
 		}
 		cars = new Car[Integer.parseInt(prop.getProperty("CARS"))];
+		outSwitch = new Boolean[Integer.parseInt(prop.getProperty("CARS"))];
 		for (int i = 0; i < Integer.parseInt(prop.getProperty("CARS")); i++) {
 			cars[i] = new Car(i);
 			cars[i].setCurrFloor(1);
 			cars[i].setDir(-1);
+			outSwitch[i] = false;
 		}
-		outSwitch = new boolean[Integer.parseInt(prop.getProperty("CARS"))];
 		state = SchedulerState.WAITING;
 
+	}
+
+	public boolean blockedState() {
+		for (int i = 0; i < orders.length; i++) {
+			if (outSwitch[i] && orders[i].isEmpty()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -56,7 +68,7 @@ public class Scheduler implements Runnable {
 		synchronized (this) {
 			while (true) {
 				// while there are no pending instructions
-				while (this.inputE.isEmpty() && this.inputF.isEmpty()) {
+				while (this.inputE.isEmpty() && this.inputF.isEmpty() && blockedState()) {
 					try {
 						state = SchedulerState.BLOCKED;
 						this.wait();
@@ -73,16 +85,14 @@ public class Scheduler implements Runnable {
 					Instruction instruction = inputF.pop();
 
 					if (instruction.getFloorBut() == 0) {
-						console(instruction.getFloor() + " going down");
+						console("Car " + instruction.getFloor() + " is going down");
 					} else {
-						console(instruction.getFloor() + " going up");
+						console("Car " + instruction.getFloor() + " is going up");
 					}
+					int currCar = schedule(instruction.getFloor(), instruction.getCarBut(), cars);
+					addOrder(orders[currCar], instruction);
 
-					// System.out.println("Checking list 3: " + orders[3].peek().getFloor());
-					// addOrder(orders[schedule(instruction.getFloor(), instruction.getCarBut(),
-					// cars)], instruction);
-					instruction.setCarNum(schedule(instruction.getFloor(), instruction.getCarBut(), cars));
-					inputE.add(instruction);
+					orders[currCar].peek().setCarNum(currCar);
 					state = SchedulerState.WAITING;
 
 				}
@@ -93,59 +103,78 @@ public class Scheduler implements Runnable {
 					// Stuff to figure out which elevator it goes to
 					state = SchedulerState.BUSY;
 					Instruction order = inputE.pop();
-					// System.out.println("Pulled from input E");
 					int carCurr = order.getCarNum();
 					addOrder(orders[carCurr], order);
-						if (!outSwitch[carCurr]) {
-							outSwitch[carCurr] = true;
-							cars[carCurr].setCurrFloor(order.getFloor());
-							cars[carCurr].setDir(order.getFloorBut());
-							Instruction currOrder = orders[carCurr].pop();
-							System.out.println("Car " + carCurr + " has type : " + currOrder.getType());
 
-							switch (currOrder.getType()) {
-							case 0:
-								// If the car is idle and has not received passengers, initiate the open
-								// procedure
+					// temp until udp
+					outSwitch[carCurr] = false;
+				}
+				for (int carCurr = 0; carCurr < outSwitch.length; carCurr++) {
+					if (!outSwitch[carCurr] && !orders[carCurr].isEmpty()) {
+						Instruction currOrder = orders[carCurr].pop();
+						outSwitch[carCurr] = true;
+						cars[carCurr].setCurrFloor(currOrder.getFloor());
+						cars[carCurr].setDir(currOrder.getFloorBut());
 
+						switch (currOrder.getType()) {
+						case 0:
+							// If the car is idle and has not received passengers, initiate the open
+							// procedure
+							if (!currOrder.getHasPass()) {
 								if (currOrder.getFloor() == currOrder.getCarCur()) {
 									currOrder.setType(1);
 									writeToElevator(currOrder);
-
 								} else {
 									// move
-									if (currOrder.getFloorBut() == 0) {
+									if (currOrder.getCarCur() > currOrder.getFloor()) {
 										currOrder.setType(5);
 										writeToElevator(currOrder);
-									} else if (currOrder.getFloorBut() == 1) {
+									} else if (currOrder.getCarCur() < currOrder.getFloor()) {
 										currOrder.setType(4);
 										writeToElevator(currOrder);
 									}
 								}
-								break;
 
-							case 1:
-								// door has opened
-								currOrder.setType(2);
-								writeToElevator(currOrder);
-								break;
-							case 2:
-								// door is open, loading
-								if (!currOrder.getHasPass()) {
-									currOrder.setHasPass(true);
-									currOrder.setType(3);
+							} else {
+								if (currOrder.getCarBut() == currOrder.getCarCur()) {
+									currOrder.setType(1);
+									writeToElevator(currOrder);
 								} else {
-									currOrder.setType(6);
+									if (currOrder.getCarCur() > currOrder.getCarBut()) {
+										currOrder.setType(5);
+										writeToElevator(currOrder);
+									} else if (currOrder.getCarCur() < currOrder.getCarBut()) {
+										currOrder.setType(4);
+										writeToElevator(currOrder);
+									}
 								}
 
-								writeToElevator(currOrder);
-								break;
-							case 3:
-								// door has closed
-								currOrder.setType(0);
-								writeToElevator(currOrder);
-								break;
-							case 4:
+							}
+							break;
+
+						case 1:
+							// door has opened
+							currOrder.setType(2);
+							writeToElevator(currOrder);
+							break;
+						case 2:
+							// door is open, loading
+							if (!currOrder.getHasPass()) {
+								currOrder.setHasPass(true);
+								currOrder.setType(3);
+							} else {
+								currOrder.setType(6);
+							}
+
+							writeToElevator(currOrder);
+							break;
+						case 3:
+							// door has closed
+							currOrder.setType(0);
+							writeToElevator(currOrder);
+							break;
+						case 4:
+							if (!currOrder.getHasPass()) {
 								if (currOrder.getFloor() == currOrder.getCarCur()) {
 									currOrder.setType(0);
 									writeToElevator(currOrder);
@@ -156,8 +185,21 @@ public class Scheduler implements Runnable {
 									writeToElevator(currOrder);
 
 								}
-								break;
-							case 5:
+							} else {
+								if (currOrder.getCarBut() == currOrder.getCarCur()) {
+									currOrder.setType(0);
+									writeToElevator(currOrder);
+
+								} else {
+									// move
+									currOrder.setType(4);
+									writeToElevator(currOrder);
+
+								}
+							}
+							break;
+						case 5:
+							if (!currOrder.getHasPass()) {
 								if (currOrder.getFloor() == currOrder.getCarCur()) {
 									currOrder.setType(0);
 									writeToElevator(currOrder);
@@ -168,15 +210,28 @@ public class Scheduler implements Runnable {
 									writeToElevator(currOrder);
 
 								}
-								break;
-							case 6:
-								// end of instruction
-								writeToFloor(currOrder);
-							
+							} else {
+								if (currOrder.getCarBut() == currOrder.getCarCur()) {
+									currOrder.setType(0);
+									writeToElevator(currOrder);
+
+								} else {
+									// move
+									currOrder.setType(5);
+									writeToElevator(currOrder);
+
+								}
+							}
+							break;
+						case 6:
+							// end of instruction
+							writeToFloor(currOrder);
+							outSwitch[carCurr] = false;
+
 						}
 					}
-
 				}
+
 				state = SchedulerState.WAITING;
 				this.notifyAll();
 
@@ -187,16 +242,12 @@ public class Scheduler implements Runnable {
 	}
 
 	private int schedule(int floor, int dir, Car[] cars) {
-		// System.out.println(floor);
-		// System.out.println(dir);
 		int distance = -1;
 		int carNum = -1;
 		int numOrders = -1;
 		for (Car car : cars) {
 			if (car.getDir() == dir || car.getDir() == -1) {
-				// System.out.println("Car " + car.getId() + " going " + car.getDir());
 				if (car.getDir() == 0) {
-					// System.out.println("down");
 					int carFloor = car.getCurrFloor();
 					if (carFloor > floor) {
 						if (distance < Math.abs(carFloor - floor) || distance == -1) {
@@ -206,7 +257,6 @@ public class Scheduler implements Runnable {
 						}
 					}
 				} else if (car.getDir() == 1) {
-					// System.out.println("up");
 					int carFloor = car.getCurrFloor();
 					if (carFloor < floor) {
 						if (distance < Math.abs(carFloor - floor) || distance == -1) {
@@ -216,7 +266,6 @@ public class Scheduler implements Runnable {
 						}
 					}
 				} else {
-					// System.out.println("no where");
 					if (orders[car.getId()].isEmpty()) {
 						carNum = car.getId();
 					} else {
@@ -228,7 +277,6 @@ public class Scheduler implements Runnable {
 				}
 			}
 		}
-		System.out.println(carNum);
 		return carNum;
 	}
 
@@ -238,26 +286,27 @@ public class Scheduler implements Runnable {
 
 	private void readFromElevator() {
 		// reading stuff
-		Instruction incoming = pendingInstruction.pop();
-		inputE.add(incoming);
-		outSwitch[incoming.getCarNum()] = false;
+		/*
+		 * Instruction incoming = pending[carNum](); inputE.add(incoming);
+		 * outSwitch[incoming.getCarNum()] = false;
+		 */
+
 	}
 
 	private void writeToElevator(Instruction ins) {
 		// reading stuff
+		//System.out.println("Write to elevator");
 		outputE.add(ins);
-		pendingInstruction.add(ins);
+
+		pending[ins.getCarNum()] = ins;
 	}
 
 	private void readFromFloor() {
 		// reading stuff
-		inputE.add(pendingInstruction.pop());
 	}
 
 	private void writeToFloor(Instruction ins) {
 		// reading stuff
-
-		pendingInstruction.add(ins);
 	}
 
 	private void addOrder(LinkedList<Instruction> orderList, Instruction newIns) {
