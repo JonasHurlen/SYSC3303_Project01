@@ -2,6 +2,7 @@ package mainCode;
 import java.sql.Timestamp;
 
 public class Instruction {
+	private int instructionID;
 	Timestamp timestamp = new Timestamp(0);
 	private int floor;//floor instruction originated from
 	private int floorBut;//direction of travel (0 is down, 1 is up, -1 is idle)
@@ -14,9 +15,18 @@ public class Instruction {
 	//private Car[] carPoll;
 	private int move = 0;//how the car should move next
 	
-	public Instruction(int floor, int floorBut){
+	public int getInstructionID() {
+		return instructionID;
+	}
+
+	public void setInstructionID(int instructionID) {
+		this.instructionID = instructionID;
+	}
+
+	public Instruction(int floor, int floorBut, int instructionID){
 		this.floor = floor;
 		this.floorBut = floorBut;
+		this.instructionID = instructionID;
 	}
 	
 	public Timestamp getTime(){

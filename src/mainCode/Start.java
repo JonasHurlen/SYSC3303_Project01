@@ -6,14 +6,21 @@ public class Start {
 		Scheduler scheduler = new Scheduler();
 
 		FloorSubsystem myFloor = new FloorSubsystem(scheduler, 2);
-		Instruction inst = myFloor.readInputFile();
+		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler);
+		
+		int numberOfLines = 2;
+		Instruction inst;
+		
+		for (int i = 0; i < numberOfLines; i++) {
+			inst = myFloor.readInputFile();
+			scheduler.inputF.add(inst);
+		}
 		//Instruction inst2 = myFloor.readInputFile();
 		
 		
-		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler);
 		//Temp until file to elevator is implemented
 		//temp until FloorSub is integrated
-		scheduler.inputF.add(inst);
+		
 		//scheduler.inputF.add(inst2);
 		//elevator1.button = elevator1.readInputFile("inputFile.csv"); // final destination
 		

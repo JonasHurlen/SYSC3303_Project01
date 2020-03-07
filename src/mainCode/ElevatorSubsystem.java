@@ -140,10 +140,10 @@ public class ElevatorSubsystem implements Runnable {
 						List<String> x = readInputFile();
 						// x is [ 4, 5]
 						// only destination floors from inputFile column 4
-						for (int i = 0; i < 2; i++) {
-							//
-							order.setCarBut(Integer.parseInt(x.get(i)));
-						}
+						
+						//
+						order.setCarBut(Integer.parseInt(x.get(order.getInstructionID())));
+						
 						scheduler.console("Doors are open, someone gets on and requests floor " + order.getCarBut());
 						try {
 							Thread.sleep(1);
