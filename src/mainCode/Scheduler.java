@@ -76,7 +76,7 @@ public class Scheduler implements Runnable {
 		Thread tEReader = new Thread(eReader);
 		tEReader.start();
 		
-		System.out.println("Started helper threads");
+		//System.out.println("Started helper threads");
 		
 		state = SchedulerState.WAITING;
 
@@ -110,6 +110,7 @@ public class Scheduler implements Runnable {
 				// while there are no pending instructions
 				
 				while (this.inputE.isEmpty() && this.inputF.isEmpty() && blockedState()) {
+					/*
 					try {
 						state = SchedulerState.BLOCKED;
 						this.wait();
@@ -118,6 +119,7 @@ public class Scheduler implements Runnable {
 						e.printStackTrace();
 					}
 					//this.readFromFloor();
+					 */
 				}
 
 				
@@ -126,7 +128,7 @@ public class Scheduler implements Runnable {
 				if (!this.inputF.isEmpty()) {
 					// Takes information from floor and sends it through to the elevators to receive
 					// info
-					System.out.println("Stuck here 2");
+					//System.out.println("Stuck here 2");
 					state = SchedulerState.BUSY;
 					Instruction instruction = inputF.pop();
 
@@ -140,6 +142,7 @@ public class Scheduler implements Runnable {
 
 					addOrder(orders[currCar], instruction);
 					orders[currCar].peek().setCarNum(currCar);
+					//System.out.println(orders[currCar].peek().getType());
 
 					state = SchedulerState.WAITING;
 
@@ -153,19 +156,19 @@ public class Scheduler implements Runnable {
 					Instruction order = inputE.pop();
 					int carCurr = order.getCarNum();
 					addOrder(orders[carCurr], order);
-
-					// temp until udp
-					outSwitch[carCurr] = false;
+					System.out.println("Scheduler read from inputE, Button pressed " + order.getCarBut());
 				}
 				
 				for (int carCurr = 0; carCurr < outSwitch.length; carCurr++) {
 					if (!outSwitch[carCurr] && !orders[carCurr].isEmpty()) {
+						System.out.println("Entered switch");
 						Instruction currOrder = orders[carCurr].pop();
 						outSwitch[carCurr] = true;
 						cars[carCurr].setCurrFloor(currOrder.getCarCur());
 						cars[carCurr].setDir(currOrder.getFloorBut());
 						// System.out.println("Car " + carCurr + "'s order is " );
 
+						System.out.println("Order type:" + currOrder.getType());
 						switch (currOrder.getType()) {
 						case 0:
 							// If the car is idle and has not received passengers, initiate the open
@@ -252,6 +255,7 @@ public class Scheduler implements Runnable {
 							writeToElevator(currOrder);
 							break;
 						case 4:
+							System.out.println("Made it into case 4 " +);
 							if (!currOrder.getHasPass()) {
 								if (currOrder.getFloor() == currOrder.getCarCur()) {
 									currOrder.setType(0);
@@ -487,13 +491,13 @@ public class Scheduler implements Runnable {
 			System.exit(1);
 		}
 
-		System.out.println("Scheduler : Sending packet:");
-		System.out.println("To Elevator : " + sendPacket.getAddress());
-		System.out.println("Destination host port: " + sendPacket.getPort());
+		//System.out.println("Scheduler : Sending packet:");
+		//System.out.println("To Elevator : " + sendPacket.getAddress());
+		//System.out.println("Destination host port: " + sendPacket.getPort());
 		int len = sendPacket.getLength();
-		System.out.println("Length: " + len);
-		System.out.print("Containing: ");
-		System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
+		//System.out.println("Length: " + len);
+		//System.out.print("Containing: ");
+		//System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
 
 		// Send the datagram packet to the server via the send/receive socket.
 
@@ -504,7 +508,7 @@ public class Scheduler implements Runnable {
 			System.exit(1);
 		}
 
-		System.out.println("SchedulerSubsystem: Packet sent.\n");
+		//System.out.println("SchedulerSubsystem: Packet sent.\n");
 	
 		pending[ins.getCarNum()] = ins;
 	}

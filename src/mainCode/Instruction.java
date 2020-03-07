@@ -8,7 +8,7 @@ public class Instruction {
 	private int floor;//floor instruction originated from
 	private int floorBut;//direction of travel (0 is down, 1 is up, -1 is idle)
 	private int carCur;//current floor of the car
-	private int carBut;//last button pressed in car
+	private int carBut = -1;//last button pressed in car
 	private int type = 0;//Flag for current instruction interpretation (0 is poll, 1 is receive button input, 2 is movement to a floor)
 	private boolean hasPassenger = false; //Has picked up a passenger for the request, i.e. carBut has a value
 	private int carNum;//number of the car

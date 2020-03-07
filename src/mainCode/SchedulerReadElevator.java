@@ -24,7 +24,7 @@ public class SchedulerReadElevator implements Runnable{
 		
 	}
 	
-	public Instruction readFromElevator() {
+	public void readFromElevator() {
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
 		//System.out.println("Scheduler: Waiting for Packet from Elevator.\n");
@@ -50,7 +50,7 @@ public class SchedulerReadElevator implements Runnable{
 
 		// Form a String from the byte array.
 		String received = new String(data, 0, len);
-		System.out.println(received + "\n");
+		//System.out.println(received + "\n");
 
 		// int floor, int floorBut, int instructionID
 		String[] info = received.split(" ");
@@ -61,25 +61,27 @@ public class SchedulerReadElevator implements Runnable{
 		int type = Integer.parseInt(info[3]);
 		int carBut = Integer.parseInt(info[4]);
 		
-		Instruction instruction = new Instruction(instructionID, carNum, carCur, type);
-		instruction.setCarBut(carBut);
-		
-		
-		
+		System.out.println(instructionID + ", " + carNum + ", " + carCur + ", " + type + ", " + carBut);
+		//Instruction instruction = new Instruction(instructionID, carNum, carCur, type);
 		Instruction incoming = master.pending[carNum];
+		if(carBut != -1) {
+			incoming.setCarBut(carBut);
+		}
+		
+		incoming.setType(type);
 		
 		
 		
 		
-		//inputE.add(incoming);
+		master.inputE.add(incoming);
 		master.outSwitch[incoming.getCarNum()] = false;
-		
-		return incoming;
+		//return incoming;
 	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		System.out.println("ReadElevatorLoop");
 		readFromElevator();
 	}
 }

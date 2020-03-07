@@ -19,8 +19,6 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class ElevatorSubsystem implements Runnable {
-
-	public Scheduler scheduler;
 	private int numCars;// Car number
 	public Car[] cars;
 	private ElevatorState state;
@@ -39,7 +37,7 @@ public class ElevatorSubsystem implements Runnable {
 	 * @param numCars car number
 	 * @throws IOException 
 	 */
-	public ElevatorSubsystem(Scheduler scheduler){
+	public ElevatorSubsystem(){
 		try {
 			// Construct a datagram socket and bind it to any available
 			// port on the local host machine. This socket will be used to
@@ -50,7 +48,6 @@ public class ElevatorSubsystem implements Runnable {
 			se.printStackTrace();
 			System.exit(1);
 		}
-		this.scheduler = scheduler;
 		FileInputStream ip;
 		try {
 			ip = new FileInputStream("config.properties");
@@ -218,7 +215,7 @@ public class ElevatorSubsystem implements Runnable {
 			System.exit(1);
 		}
 
-		System.out.println("ElevatorSubsystem: Packet sent.\n");
+		//System.out.println("ElevatorSubsystem: Packet sent.\n");
 		//scheduler.readFromElevator();
 
 	}
@@ -231,16 +228,16 @@ public class ElevatorSubsystem implements Runnable {
 	 */
 	public void run() {
 		while (true) {
-			synchronized (scheduler) {
 				// wait while both the input and output lists are empty
-				while (scheduler.outputE.isEmpty() && !inputE.isEmpty()) {// will change to individual write
-																					// queues
+				while (outputE.isEmpty() && !inputE.isEmpty()) {// will change to individual write
+					/*																// queues
 					try {
 						state = ElevatorState.BLOCKED;
-						scheduler.wait();
+						this.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					*/
 				}
 				// if there is something in the incoming instructions
 				if (!outputE.isEmpty()) {
@@ -254,8 +251,8 @@ public class ElevatorSubsystem implements Runnable {
 					switch (type) {
 					case 0:
 						// Stop/idle
-						scheduler.console("Car " + car + " is on " + order.getCarCur());
-						scheduler.inputE.add(order);
+						System.out.println("Car " + car + " is on " + order.getCarCur());
+						sendScheduler(order);
 						break;
 					case 1:
 						System.out.println("Car " + car + " Doors Opened on floor " + order.getCarCur());
@@ -279,7 +276,7 @@ public class ElevatorSubsystem implements Runnable {
 						//
 						order.setCarBut(Integer.parseInt(x.get(order.getInstructionID())));
 						
-						scheduler.console("Car " + car + "'s Doors are open, someone gets on and requests floor " + order.getCarBut());
+						System.out.println("Car " + car + "'s Doors are open, someone gets on and requests floor " + order.getCarBut());
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
@@ -351,9 +348,8 @@ public class ElevatorSubsystem implements Runnable {
 
 				}
 				state = ElevatorState.WAITING;
-				scheduler.notifyAll();
 
-			}
+			
 
 		}
 
