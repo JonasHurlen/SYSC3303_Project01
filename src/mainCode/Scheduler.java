@@ -26,6 +26,12 @@ public class Scheduler implements Runnable {
 	DatagramPacket sendPacket, receivePacket;
 	DatagramSocket receiveSocket;
 
+	/**
+	 * Public constructor for class scheduler
+	 *
+	 * @throws SocketException if socket cannot be created
+	 * @throws IOException if file string cannot be accessed
+	 */
 	public Scheduler() {
 		try {
 	         // Construct a datagram socket and bind it to any available 
@@ -66,6 +72,11 @@ public class Scheduler implements Runnable {
 
 	}
 
+	/**
+	 * Returns true of false depending on if the state has been blocked
+	 *
+	 * @return boolean value of the blocked state (either true or false)
+	 */
 	public boolean blockedState() {
 		for (int i = 0; i < orders.length; i++) {
 			if (outSwitch[i] && orders[i].isEmpty()) {
@@ -75,6 +86,11 @@ public class Scheduler implements Runnable {
 		return false;
 	}
 
+	/**
+	 * Runs the scheduler 
+	 *
+	 * @throws InterruptedException if thread is inaccessible
+	 */
 	@Override
 	public void run() {
 
@@ -291,6 +307,15 @@ public class Scheduler implements Runnable {
 
 	}
 
+	/**
+	 * Runs the scheduler 
+	 * 
+	 * @param floor destination floor
+	 * @param dir direction of travel
+	 * @param cars internal storage for all the different cars (elevators)
+	 * @return returns the car number
+	 * @throws InterruptedException if thread is inaccessible
+	 */
 	private int schedule(int floor, int dir, Car[] cars) {
 		int distance = -1;
 		int carNum = -1;
@@ -330,10 +355,20 @@ public class Scheduler implements Runnable {
 		return carNum;
 	}
 
+	
+	/**
+	 * Prints output messages to the console 
+	 *
+	 */
 	public void console(Object in) {
 		System.out.println(in);
 	}
 
+	
+	/**
+	 * Reads instructions from the elevator 
+	 *
+	 */
 	private void readFromElevator() {
 		// reading stuff
 		/*
@@ -342,7 +377,12 @@ public class Scheduler implements Runnable {
 		 */
 
 	}
-
+	
+	
+	/**
+	 * Writes instructions to the elevator
+	 *
+	 */
 	private void writeToElevator(Instruction ins) {
 		// reading stuff
 		//System.out.println("Write to elevator");
@@ -351,6 +391,12 @@ public class Scheduler implements Runnable {
 		pending[ins.getCarNum()] = ins;
 	}
 
+	
+	/**
+	 * Reads instructions from the floor 
+	 *
+	 * @throws IOException interrupts once waiting is finished
+	 */
 	public void readFromFloor() {
 		byte data[] = new byte[1000];
 	      receivePacket = new DatagramPacket(data, data.length);
@@ -389,10 +435,21 @@ public class Scheduler implements Runnable {
 	      
 	}
 
+	/**
+	 * Writes instructions to the floor 
+	 *
+	 * @throws IOException interrupts once waiting is finished
+	 */
 	private void writeToFloor(Instruction ins) {
 		// reading stuff
 	}
 
+	/**
+	 * Orders the order when you add order to orders
+	 *
+	 * @param orderList list of orders
+	 * @param newIns new instructions
+	 */
 	private void addOrder(LinkedList<Instruction> orderList, Instruction newIns) {
 		int destination = -1;
 		if (newIns.getHasPass()) {
