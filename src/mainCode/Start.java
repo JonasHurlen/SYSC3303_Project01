@@ -5,14 +5,14 @@ public class Start {
 		
 		Scheduler scheduler = new Scheduler();
 
-		FloorSubsystem myFloor = new FloorSubsystem(scheduler, 2);
-		ElevatorSubsystem elevator1 = new ElevatorSubsystem(scheduler);
+		FloorSubsystem floors = new FloorSubsystem(scheduler);
+		ElevatorSubsystem elevators = new ElevatorSubsystem(scheduler);
 		
 		int numberOfLines = 5;
 		Instruction inst;
 		
 		for (int i = 0; i < numberOfLines; i++) {
-			inst = myFloor.readInputFile(i);
+			inst = floors.readInputFile(i);
 			scheduler.inputF.add(inst);
 		}
 		//Instruction inst2 = myFloor.readInputFile();
@@ -24,12 +24,12 @@ public class Start {
 		//scheduler.inputF.add(inst2);
 		//elevator1.button = elevator1.readInputFile("inputFile.csv"); // final destination
 		
-		Thread tElevator1 = new Thread(elevator1);
+		Thread tElevators = new Thread(elevators);
 		Thread tScheduler = new Thread(scheduler);
-		Thread tFloor = new Thread(myFloor);
+		Thread tFloor = new Thread(floors);
 		
 		tScheduler.start();
-		tElevator1.start();
+		tElevators.start();
 		
 		tFloor.start();
 		
