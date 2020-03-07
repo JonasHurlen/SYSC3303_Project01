@@ -3,6 +3,9 @@ package mainCode;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Properties;
@@ -20,8 +23,19 @@ public class Scheduler implements Runnable {
 	private SchedulerState state;
 	private int numFloors;
 	private boolean hasInit = false;
+	DatagramPacket sendPacket, receivePacket;
+	DatagramSocket receiveSocket;
 
 	public Scheduler() {
+		try {
+	         // Construct a datagram socket and bind it to any available 
+	         // port on the local host machine. This socket will be used to
+	         // send and receive UDP Datagram packets.
+	         receiveSocket = new DatagramSocket(40979);
+	      } catch (SocketException se) {   // Can't create the socket.
+	         se.printStackTrace();
+	         System.exit(1);
+	      }
 		Properties prop = new Properties();
 		FileInputStream ip;
 		try {
@@ -76,8 +90,12 @@ public class Scheduler implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					//this.readFromFloor();
 				}
 
+				
+				
+				
 				if (!this.inputF.isEmpty()) {
 					// Takes information from floor and sends it through to the elevators to receive
 					// info
@@ -333,8 +351,42 @@ public class Scheduler implements Runnable {
 		pending[ins.getCarNum()] = ins;
 	}
 
-	private void readFromFloor() {
-		// reading stuff
+	public void readFromFloor() {
+		byte data[] = new byte[1000];
+	      receivePacket = new DatagramPacket(data, data.length);
+	      System.out.println("Scheduler: Waiting for Packet.\n");
+
+	      // Block until a datagram packet is received from receiveSocket.
+	      try {        
+	         System.out.println("Waiting..."); // so we know we're waiting
+	         receiveSocket.receive(receivePacket);
+	      } catch (IOException e) {
+	         System.out.print("IO Exception: likely:");
+	         System.out.println("Receive Socket Timed Out.\n" + e);
+	         e.printStackTrace();
+	         System.exit(1);
+	      }
+
+	      // Process the received datagram.
+	      System.out.println("Scheduler: Packet received:");
+	      System.out.println("From host: " + receivePacket.getAddress());
+	      System.out.println("Host port: " + receivePacket.getPort());
+	      int len = receivePacket.getLength();
+	      System.out.println("Length: " + len);
+	      System.out.print("Containing: " );
+
+	      // Form a String from the byte array.
+	      String received = new String(data,0,len);   
+	      System.out.println(received + "\n");
+	      
+	    //int floor, int floorBut, int instructionID
+	      String[] info = received.split(" ");
+	      int floor = Integer.parseInt(info[0]);
+	      int floorBut = Integer.parseInt(info[1]);
+	      int instructionID = Integer.parseInt(info[2]);
+	      Instruction instruction = new Instruction(floor, floorBut, instructionID);
+	      inputF.add(instruction);
+	      
 	}
 
 	private void writeToFloor(Instruction ins) {
