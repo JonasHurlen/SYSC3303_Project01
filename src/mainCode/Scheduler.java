@@ -102,6 +102,7 @@ public class Scheduler implements Runnable {
 		synchronized (this) {
 			while (true) {
 				// while there are no pending instructions
+				
 				while (this.inputE.isEmpty() && this.inputF.isEmpty() && blockedState()) {
 					try {
 						state = SchedulerState.BLOCKED;
@@ -112,6 +113,7 @@ public class Scheduler implements Runnable {
 					}
 				
 				}
+				
 
 				if (!this.inputF.isEmpty()) {
 					// Takes information from floor and sends it through to the elevators to receive
@@ -370,7 +372,7 @@ public class Scheduler implements Runnable {
 	 * Reads instructions from the elevator 
 	 *
 	 */
-	private Instruction readFromElevator() {
+	public Instruction readFromElevator() {
 
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
@@ -430,7 +432,7 @@ public class Scheduler implements Runnable {
 	 * Writes instructions to the elevator
 	 *
 	 */
-	private void writeToElevator(Instruction ins) {
+	public void writeToElevator(Instruction ins) {
 		// reading stuff
 		// System.out.println("Write to elevator");
 		outputE.add(ins);
