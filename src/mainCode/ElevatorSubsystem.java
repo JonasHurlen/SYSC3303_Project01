@@ -6,6 +6,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,8 +27,20 @@ public class ElevatorSubsystem implements Runnable {
 	private boolean[] elevatorLamp;
 	private boolean[] doorOpen;
 	Properties prop = new Properties();
+	DatagramPacket sendPacket, receivePacket;
+	DatagramSocket receiveSocket, sendSocket;
 
 	public ElevatorSubsystem(Scheduler scheduler) {
+		try {
+			// Construct a datagram socket and bind it to any available
+			// port on the local host machine. This socket will be used to
+			// send and receive UDP Datagram packets.
+			sendSocket = new DatagramSocket();
+			receiveSocket = new DatagramSocket(38594);
+		} catch (SocketException se) { // Can't create the socket.
+			se.printStackTrace();
+			System.exit(1);
+		}
 		this.scheduler = scheduler;
 		FileInputStream ip;
 		try {
@@ -90,10 +107,89 @@ public class ElevatorSubsystem implements Runnable {
 		return inputData;
 	}
 
-	public void sendToElevator(int car, int floor, int error) {
+	public Instruction receiveScheduler() {
+		byte data[] = new byte[1000];
+		receivePacket = new DatagramPacket(data, data.length);
+		System.out.println("Scheduler: Waiting for Packet.\n");
+
+		// Block until a datagram packet is received from receiveSocket.
+		try {
+			System.out.println("Waiting..."); // so we know we're waiting
+			receiveSocket.receive(receivePacket);
+		} catch (IOException e) {
+			System.out.print("IO Exception: likely:");
+			System.out.println("Receive Socket Timed Out.\n" + e);
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		// Process the received datagram.
+		System.out.println("Elevator: Packet received:");
+		System.out.println("From Scheduler: " + receivePacket.getAddress());
+		System.out.println("Host port: " + receivePacket.getPort());
+		int len = receivePacket.getLength();
+		System.out.println("Length: " + len);
+		System.out.print("Containing: ");
+
+		// Form a String from the byte array.
+		String received = new String(data, 0, len);
+		System.out.println(received + "\n");
+
+		
+		String[] info = received.split(" ");
+		int instructionID = Integer.parseInt(info[0]);
+		int carNum = Integer.parseInt(info[1]);
+		int carCur = Integer.parseInt(info[2]);
+		int type = Integer.parseInt(info[3]);
+		
+		return new Instruction(instructionID, carNum, carCur, type);
+		
+		
+				
 		
 	}
-	
+
+	public void sendScheduler(Instruction inst) {
+
+		String first = ((Integer) inst.getInstructionID()).toString();
+		String second = ((Integer) inst.getCarNum()).toString();
+		String third = ((Integer) inst.getCarCur()).toString();
+		String fourth = ((Integer) inst.getType()).toString();
+		String fifth = ((Integer) inst.getCarBut()).toString();
+		String message = first + " " + second + " " + third + " " + fourth + " " + fifth;
+		
+		byte[] msg = message.getBytes();
+
+		try {
+			sendPacket = new DatagramPacket(msg, msg.length,
+			InetAddress.getLocalHost(), 45892);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("Elevator : Sending packet:");
+		System.out.println("To Scheduler : " + sendPacket.getAddress());
+		System.out.println("Destination host port: " + sendPacket.getPort());
+		int len = sendPacket.getLength();
+		System.out.println("Length: " + len);
+		System.out.print("Containing: ");
+		System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
+
+		// Send the datagram packet to the server via the send/receive socket.
+
+		try {
+			sendSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("ElevatorSubsystem: Packet sent.\n");
+		scheduler.readFromFloor();
+
+	}
+
 	public void run() {
 		while (true) {
 			synchronized (scheduler) {
@@ -110,16 +206,18 @@ public class ElevatorSubsystem implements Runnable {
 				}
 				// if there is something in the incoming instructions
 				if (!scheduler.outputE.isEmpty()) {
-					//System.out.println("Elevator Reading");
+					// System.out.println("Elevator Reading");
 					state = ElevatorState.BUSY;
-					Instruction order = scheduler.outputE.pop();
+					//Instruction order = scheduler.outputE.pop();
+					Instruction order = receiveScheduler();
+					System.out.println(order.getCarCur() + " " + order.getCarNum() + " " + order.getInstructionID());
 					int type = order.getType();
 					int car = order.getCarNum();
 					switch (type) {
 					case 0:
 						// Stop/idle
 						scheduler.console(car + " is on " + order.getCarCur());
-						scheduler.inputE.add(order);
+						sendScheduler(order);
 						break;
 					case 1:
 						System.out.println("Car " + car + " Doors Opened on floor " + order.getCarCur());
@@ -130,7 +228,7 @@ public class ElevatorSubsystem implements Runnable {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						scheduler.inputE.add(order);
+						sendScheduler(order);
 						break;
 					case 2:
 						//
@@ -140,10 +238,10 @@ public class ElevatorSubsystem implements Runnable {
 						List<String> x = readInputFile();
 						// x is [ 4, 5]
 						// only destination floors from inputFile column 4
-						
+
 						//
 						order.setCarBut(Integer.parseInt(x.get(order.getInstructionID())));
-						
+
 						scheduler.console("Doors are open, someone gets on and requests floor " + order.getCarBut());
 						try {
 							Thread.sleep(1);
@@ -151,7 +249,7 @@ public class ElevatorSubsystem implements Runnable {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						scheduler.inputE.add(order);
+						sendScheduler(order);
 						break;
 
 					case 3:
@@ -163,7 +261,7 @@ public class ElevatorSubsystem implements Runnable {
 							e.printStackTrace();
 						}
 						doorOpen[car] = false;
-						scheduler.inputE.add(order);
+						sendScheduler(order);
 						break;
 					case 4:
 						// Move elevator up
@@ -177,7 +275,7 @@ public class ElevatorSubsystem implements Runnable {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						scheduler.inputE.add(order);
+						sendScheduler(order);
 						break;
 					case 5:
 						// Move elevator down
@@ -191,11 +289,9 @@ public class ElevatorSubsystem implements Runnable {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						scheduler.inputE.add(order);
+						sendScheduler(order);
 						break;
 
-				
-						
 					case 6:
 						System.out.println("Car " + car + ", doors closed on floor " + order.getCarCur());
 						try {
@@ -205,22 +301,22 @@ public class ElevatorSubsystem implements Runnable {
 							e.printStackTrace();
 						}
 						doorOpen[car] = false;
-						scheduler.inputE.add(order);
+						sendScheduler(order);
 						break;
-						
+
 					case 7:
-						System.out.println("Car " + car + ", doors are open on floor " + order.getCarCur() + ", people get off");
+						System.out.println(
+								"Car " + car + ", doors are open on floor " + order.getCarCur() + ", people get off");
 						try {
 							Thread.sleep(1);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						scheduler.inputE.add(order);
+						sendScheduler(order);
 						break;
-						
+
 					}
-					
 
 				}
 				state = ElevatorState.WAITING;
