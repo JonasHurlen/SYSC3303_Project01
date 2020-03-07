@@ -29,8 +29,8 @@ public class ElevatorSubsystem implements Runnable {
 	Properties prop = new Properties();
 	DatagramPacket sendPacket;
 	DatagramSocket sendSocket;
-	public LinkedList<Instruction> outputE;
-	public LinkedList<Instruction> inputE;
+	public LinkedList<Instruction> outputE = new LinkedList<Instruction>();
+	public LinkedList<Instruction> inputE = new LinkedList<Instruction>();
 
 	/**
 	 * Public constructor for class elevator subsystem
@@ -219,7 +219,7 @@ public class ElevatorSubsystem implements Runnable {
 		}
 
 		System.out.println("ElevatorSubsystem: Packet sent.\n");
-		scheduler.readFromElevator();
+		//scheduler.readFromElevator();
 
 	}
 

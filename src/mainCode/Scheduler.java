@@ -67,6 +67,8 @@ public class Scheduler implements Runnable {
 		Thread tEReader = new Thread(eReader);
 		tEReader.start();
 		
+		System.out.println("Started helper threads");
+		
 		state = SchedulerState.WAITING;
 
 	}
