@@ -7,9 +7,13 @@ public class FloorSubsystem implements Runnable {
 	private int floorNumber;
 	private String[] myArray;
 	private Scheduler scheduler;
-
+	
+	/**
+	 * Runs the floor subsystem
+	 *
+	 * @throws InterruptedException if thread is inaccessible
+	 */
 	public void run() {
-
 		while (true) {
 			synchronized (scheduler) {
 				// wait while both the input and output lists are empty
@@ -30,28 +34,34 @@ public class FloorSubsystem implements Runnable {
 		}
 
 	}
-/**
- * FloorSubsystem Constructor
- * @param scheduler
- * @param floorNumber
- */
+
+	/**
+	 * Public constructor for class floor subsystem
+	 *
+	 * @param scheduler scheduler used to schedule the relevant elevators
+	 * @param floorNumber floor number
+	 */
 	public FloorSubsystem(Scheduler scheduler, int floorNumber) {
 		this.scheduler = scheduler;
 		this.floorNumber = floorNumber;
 	}
 	
+	/**
+	 * Gets the floor number of the elevator
+	 *
+	 * @return the floor number
+	 */
 	public int getFloorNumber() {
 		return this.floorNumber;
 	}
 	
 	/**
-	 * readInputFile() method will read in events from csv file to be sent to the scheduler 
-	 * @param String that is the name of the csv file
-	 * @return Instruction 
+	 * Reads in events from .txt file to be sent to the scheduler 
+	 *
+	 * @return instructions obtained from .txt file
+	 * @throws FileNotFoundException if the .txt file cannot be found
+	 * @throws IOException if the input data cannot be read from
 	 */
-
-	
-	
 	public static Instruction readInputFile() {
 		//Integer myInt = null;
 		List<String>inputData = new ArrayList<String>();
