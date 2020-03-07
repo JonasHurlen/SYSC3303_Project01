@@ -208,6 +208,17 @@ public class ElevatorSubsystem implements Runnable {
 						scheduler.inputE.add(order);
 						break;
 						
+					case 7:
+						System.out.println("Car " + car + ", doors are open on floor " + order.getCarCur() + ", people get off");
+						try {
+							Thread.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						scheduler.inputE.add(order);
+						break;
+						
 					}
 					
 

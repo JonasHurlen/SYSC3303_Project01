@@ -85,9 +85,9 @@ public class Scheduler implements Runnable {
 					Instruction instruction = inputF.pop();
 
 					if (instruction.getFloorBut() == 0) {
-						console("Car " + instruction.getFloor() + " is going down");
+						console("Floor " + instruction.getFloor() + " requests down");
 					} else {
-						console("Car " + instruction.getFloor() + " is going up");
+						console("Floor " + instruction.getFloor() + " requests up");
 					}
 					int currCar = schedule(instruction.getFloor(), instruction.getCarBut(), cars);
 					addOrder(orders[currCar], instruction);
@@ -154,8 +154,36 @@ public class Scheduler implements Runnable {
 
 						case 1:
 							// door has opened
-							currOrder.setType(2);
-							writeToElevator(currOrder);
+							if(currOrder.getHasPass()) {
+								if(!orders[carCurr].isEmpty()) {
+									Instruction next = orders[carCurr].peek();
+									if(next.getHasPass()) {
+										
+										if(next.getFloor() == currOrder.getCarCur()) {
+											currOrder.setType(2);
+											writeToElevator(currOrder);	
+										}else {
+											currOrder.setType(7);
+											writeToElevator(currOrder);
+										}
+									}else {
+										if(next.getCarBut() == currOrder.getCarCur()) {
+											currOrder.setType(2);
+											writeToElevator(currOrder);	
+										}else {
+											currOrder.setType(7);
+											writeToElevator(currOrder);
+										}
+									}
+								}else {
+									currOrder.setType(7);
+									writeToElevator(currOrder);
+								}
+							}else {
+								currOrder.setType(2);
+								writeToElevator(currOrder);
+							}
+							
 							break;
 						case 2:
 							// door is open, loading
@@ -228,6 +256,10 @@ public class Scheduler implements Runnable {
 							writeToFloor(currOrder);
 							outSwitch[carCurr] = false;
 
+						case 7:
+							// end of instruction
+							currOrder.setType(6);
+							writeToElevator(currOrder);
 						}
 					}
 				}
