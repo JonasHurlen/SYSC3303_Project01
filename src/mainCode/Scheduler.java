@@ -18,7 +18,7 @@ public class Scheduler implements Runnable {
 	LinkedList<Instruction> outputE = new LinkedList<Instruction>();// output to elevator
 	LinkedList<Instruction> acknowledged = new LinkedList<Instruction>();// output to floor
 	public LinkedList<Instruction>[] orders;
-	private Boolean[] outSwitch;
+	protected Boolean[] outSwitch;
 	private Car[] cars;
 	private SchedulerState state;
 	private int numFloors;
@@ -60,6 +60,9 @@ public class Scheduler implements Runnable {
 			cars[i].setDir(-1);
 			outSwitch[i] = false;
 		}
+		SchedulerReadFloor fReader = new SchedulerReadFloor(this);
+		Thread tFReader = new Thread(fReader);
+		tFReader.start();
 		SchedulerReadElevator eReader = new SchedulerReadElevator(this);
 		Thread tEReader = new Thread(eReader);
 		tEReader.start();
@@ -393,6 +396,7 @@ public class Scheduler implements Runnable {
 	 * Reads instructions from the elevator 
 	 *
 	 */
+	/*
 	public Instruction readFromElevator() {
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
@@ -445,7 +449,7 @@ public class Scheduler implements Runnable {
 		
 		return incoming;
 	}
-	
+	*/
 	
 	/**
 	 * Writes instructions to the elevator
