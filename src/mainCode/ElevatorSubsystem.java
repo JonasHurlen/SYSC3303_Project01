@@ -128,7 +128,7 @@ public class ElevatorSubsystem implements Runnable {
 		return inputData;
 	}
 
-	public Instruction receiveScheduler() {
+	public Instruction receiveFromScheduler() {
 		byte data[] = new byte[1000];
 		receivePacket = new DatagramPacket(data, data.length);
 		System.out.println("Elevator: Waiting for Packet.\n");
@@ -207,7 +207,7 @@ public class ElevatorSubsystem implements Runnable {
 		}
 
 		System.out.println("ElevatorSubsystem: Packet sent.\n");
-		scheduler.readFromFloor();
+		scheduler.readFromElevator();
 
 	}
 
@@ -236,7 +236,7 @@ public class ElevatorSubsystem implements Runnable {
 					// System.out.println("Elevator Reading");
 					state = ElevatorState.BUSY;
 					//Instruction order = scheduler.outputE.pop();
-					Instruction order = receiveScheduler();
+					Instruction order = receiveFromScheduler();
 					System.out.println(order.getCarCur() + " " + order.getCarNum() + " " + order.getInstructionID());
 					int type = order.getType();
 					int car = order.getCarNum();
