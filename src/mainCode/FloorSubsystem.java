@@ -3,7 +3,6 @@ package mainCode;
 import java.io.*;
 import java.io.*;
 import java.net.*;
-
 import java.util.*;
 
 public class FloorSubsystem implements Runnable {
@@ -53,10 +52,7 @@ public class FloorSubsystem implements Runnable {
 		}
 
 		System.out.println("Floor: Packet sent.\n");
-		
-
-		// int floor, int floorBut, int instructionID
-		// ADD TIMESTAMP
+		scheduler.readFromFloor();
 
 	}
 
@@ -74,7 +70,6 @@ public class FloorSubsystem implements Runnable {
 					try {
 						scheduler.wait();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -94,14 +89,11 @@ public class FloorSubsystem implements Runnable {
 	 * @param scheduler scheduler used to schedule the relevant elevators
 	 * @param floorNumber floor number
 	 */
-	public FloorSubsystem(Scheduler scheduler) {
-		this.scheduler = scheduler;
+	public FloorSubsystem() {
+	//	this.scheduler = scheduler;
 		try {
-			// Construct a datagram socket and bind it to any available
-			// port on the local host machine. This socket will be used to
-			// send and receive UDP Datagram packets.
 			sendReceiveSocket = new DatagramSocket();
-		} catch (SocketException se) { // Can't create the socket.
+		} catch (SocketException se) { 
 			se.printStackTrace();
 			System.exit(1);
 		}
@@ -125,10 +117,10 @@ public class FloorSubsystem implements Runnable {
 	 * @param String that is the name of the csv file
 	 * @return Instruction 
 	 */	
-	public static Instruction readInputFile(int desiredLine) {
+	public Instruction readInputFile(int desiredLine) {
 
 		// Integer myInt = null;
-		List<String> inputData = new ArrayList<String>();
+		//List<String> inputData = new ArrayList<String>();
 		FileReader input = null;
 		try {
 			input = new FileReader("inputFile.txt");
@@ -146,16 +138,23 @@ public class FloorSubsystem implements Runnable {
 			}
 			myLine = buff.readLine();
 			String[] info = myLine.split(" ");
-			String destinationFloor = info[3];
-			inputData.add(destinationFloor);
-			// System.out.println((Integer.parseInt(x.get(0))));
-			instruction = new Instruction(Integer.parseInt(info[1]), Integer.parseInt(info[2]), desiredLine);
-
+			instruction = new Instruction(info[0],
+					Integer.parseInt(info[1]), Integer.parseInt(info[2]), desiredLine);
+			System.out.println(info[0]);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		return instruction;
 	}
+	   public static void main( String args[] ) {
+		   FloorSubsystem f = new FloorSubsystem();
+		   f.startReading();
+		   Thread tFloor = new Thread(f);
+		   tFloor.start();
 
+		   
+
+	   }
 }

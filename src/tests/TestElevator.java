@@ -9,9 +9,10 @@ import mainCode.ElevatorSubsystem;
 class TestElevator {
 	ElevatorSubsystem subsystem;
 	
+	
 	@BeforeEach
 	void setup() {
-		subsystem = new ElevatorSubsystem(null, 1);
+		subsystem = new ElevatorSubsystem(null);
 	}
 	
 	@Test

@@ -11,12 +11,12 @@ class TestInstruction {
 	
 	@BeforeEach
 	void setup() {
-		instruction = new Instruction(1, 0);
+		instruction = new Instruction(2, 1, 0);
 	}
 
 	@Test
 	void testFloor() {
-		assertEquals(instruction.getFloor(), 1);
+		assertEquals(instruction.getFloor(), 2);
 	}
 	
 	@Test
@@ -29,7 +29,7 @@ class TestInstruction {
 	@Test
 	void testFloorBut() {
 		setupFloorBut();
-		assertEquals(instruction.getFloorBut(), 0);
+		assertEquals(instruction.getFloorBut(), 1);
 		assertEquals(instruction2.getFloorBut(), 1);
 	}
 	
@@ -53,14 +53,7 @@ class TestInstruction {
 		instruction.setCarNum(5);
 		assertEquals(instruction.getCarNum(), 5);
 	}
-	
-	@Test
-	void testFloorOrder() {
-		assertEquals(instruction.getfloorOrder(), 0);
-		instruction.setfloorOrder(3);
-		assertEquals(instruction.getfloorOrder(), 3);
-	}
-	
+		
 	@Test
 	void testMove() {
 		instruction.setMove(1);
@@ -68,6 +61,6 @@ class TestInstruction {
 	}
 	
 	void setupFloorBut() {
-		instruction2 = new Instruction(1, 1);
+		instruction2 = new Instruction(1, 1, 1);
 	}
 }

@@ -98,6 +98,7 @@ public class Scheduler implements Runnable {
 		synchronized (this) {
 			while (true) {
 				// while there are no pending instructions
+				
 				while (this.inputE.isEmpty() && this.inputF.isEmpty() && blockedState()) {
 					try {
 						state = SchedulerState.BLOCKED;
@@ -115,6 +116,7 @@ public class Scheduler implements Runnable {
 				if (!this.inputF.isEmpty()) {
 					// Takes information from floor and sends it through to the elevators to receive
 					// info
+					System.out.println("Stuck here 2");
 					state = SchedulerState.BUSY;
 					Instruction instruction = inputF.pop();
 
@@ -395,12 +397,7 @@ public class Scheduler implements Runnable {
 	 * Reads instructions from the elevator 
 	 *
 	 */
-	private void readFromElevator() {
-		// reading stuff
-		/*
-		 * Instruction incoming = pending[carNum](); inputE.add(incoming);
-		 * outSwitch[incoming.getCarNum()] = false;
-		 */
+	public Instruction readFromElevator() {
 
 	}
 	
@@ -409,7 +406,7 @@ public class Scheduler implements Runnable {
 	 * Writes instructions to the elevator
 	 *
 	 */
-	private void writeToElevator(Instruction ins) {
+	public void writeToElevator(Instruction ins) {
 		// reading stuff
 		// System.out.println("Write to elevator");
 		outputE.add(ins);
