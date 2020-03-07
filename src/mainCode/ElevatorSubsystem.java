@@ -17,7 +17,14 @@ public class ElevatorSubsystem implements Runnable {
 	private int numCars;//Car number
 	public Car[] cars;
 	private ElevatorState state;
-
+	
+	/**
+	 * Sets the current floor of the elevator
+	 *
+	 * @param scheduler
+	 * @param numCars 
+	 * @return 
+	 */
 	public ElevatorSubsystem(Scheduler scheduler, int numCars) {
 		this.scheduler = scheduler;
 		this.numCars = numCars;
