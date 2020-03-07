@@ -19,7 +19,7 @@ public class ElevatorSubsystem implements Runnable {
 	private ElevatorState state;
 	
 	/**
-	 * Public constructor for class ElevatorSubsystem
+	 * Public constructor for class elevator subsystem
 	 *
 	 * @param scheduler scheduler used to schedule the relevant elevators
 	 * @param numCars car number
