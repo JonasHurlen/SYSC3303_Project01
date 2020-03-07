@@ -255,7 +255,7 @@ public class Scheduler implements Runnable {
 							writeToElevator(currOrder);
 							break;
 						case 4:
-							System.out.println("Made it into case 4 " +);
+							System.out.println("Made it into case 4 ");
 							if (!currOrder.getHasPass()) {
 								if (currOrder.getFloor() == currOrder.getCarCur()) {
 									currOrder.setType(0);

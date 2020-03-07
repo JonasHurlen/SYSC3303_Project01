@@ -187,7 +187,7 @@ public class ElevatorSubsystem implements Runnable {
 		String fourth = ((Integer) inst.getType()).toString();
 		String fifth = ((Integer) inst.getCarBut()).toString();
 		String message = first + " " + second + " " + third + " " + fourth + " " + fifth;
-		
+		System.out.println(message);
 		byte[] msg = message.getBytes();
 
 		try {
@@ -210,6 +210,7 @@ public class ElevatorSubsystem implements Runnable {
 
 		try {
 			sendSocket.send(sendPacket);
+			System.out.println("Elevator sent");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);

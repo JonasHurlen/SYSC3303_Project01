@@ -81,7 +81,10 @@ public class SchedulerReadElevator implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		System.out.println("ReadElevatorLoop");
-		readFromElevator();
+		while(true) {
+			System.out.println("ReadElevatorLoop");
+			readFromElevator();
+		}
+		
 	}
 }
