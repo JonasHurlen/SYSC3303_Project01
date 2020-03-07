@@ -29,7 +29,7 @@ public class SchedulerReadFloor implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true) {
-			
+			readFromFloor();
 		}
 	}
 	public void readFromFloor() {
