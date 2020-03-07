@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Properties;
@@ -460,10 +462,45 @@ public class Scheduler implements Runnable {
 	public void writeToElevator(Instruction ins) {
 		// reading stuff
 		// System.out.println("Write to elevator");
-		outputE.add(ins);
+		//outputE.add(ins);
+		String first = ((Integer) ins.getInstructionID()).toString();
+		String second = ((Integer) ins.getCarNum()).toString();
+		String third = ((Integer) ins.getCarCur()).toString();
+		String fourth = ((Integer) ins.getType()).toString();
+		
+		String message = first + " " + second + " " + third + " " + fourth;
+		
+		byte[] msg = message.getBytes();
 
+		try {
+			sendPacket = new DatagramPacket(msg, msg.length,
+			InetAddress.getLocalHost(), 38594);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("Scheduler : Sending packet:");
+		System.out.println("To Elevator : " + sendPacket.getAddress());
+		System.out.println("Destination host port: " + sendPacket.getPort());
+		int len = sendPacket.getLength();
+		System.out.println("Length: " + len);
+		System.out.print("Containing: ");
+		System.out.println(new String(sendPacket.getData(), 0, len)); // or could print "s"
+
+		// Send the datagram packet to the server via the send/receive socket.
+
+		try {
+			sendElevatorSocket.send(sendPacket);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		System.out.println("SchedulerSubsystem: Packet sent.\n");
+	
 		pending[ins.getCarNum()] = ins;
-	} 
+	}
 
 	
 	/**
