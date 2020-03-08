@@ -27,6 +27,9 @@ Included Files
 	ElevatorState.java - Enum class used to enumerate all possible states of elevator
 	SchedulerState.java - Enum class used to enumerate all possible states of scheduler
 	inputFile.csv- Contains a instructions for the operation of the simulation
+	ElevatorRead.java- Class that runs as a complimentary thread to elevator. Takes in all input from UDP and sends it to Elevator
+	SchedulerReadFloor.java- Class that runs as a complimentary thread to the scheduler that takes in all input from the floor and feeds it to the scheduler
+	SchedulerReadElevator.java- Class that runs as a complimentary thread to the scheduler that takes in all input from the elevator and feeds it to the scheduler
 	Iteration1 Documenation.pdf - contains class diagram and sequence diagram
 	Iteration2 Documentation.pdf - contains all necessary diagrams
 	Remaining files - There are 2 draw.io files, and 2 png files as a backup for the diagrams
