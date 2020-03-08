@@ -1,13 +1,12 @@
 Elevator Scheduling System
 
-Group 1 Submission for 3303 Project Iteration 2
+Group 1 Submission for 3303 Project Iteration 3
 
 Installation
-	All java files and the .csv file must be included in the same project to ensure proper communication
+	All java files and the .txt file must be included in the same project to ensure proper communication
 	
 To Run
-	To begin running the program, run the start class and it will begin all threads
-	The csv file can be filled with additional instructions for the program
+	To begin running the program, run the Scheduler class, then the ElevatorSubsystem, then the Floor Subsystems. All inputs are read from inputFile.txt.
 
 Tests
 	- The first test file is TestElevator, which can be run by right-clicking on the file and selecting
@@ -15,7 +14,7 @@ Tests
 	as well as TestCar and TestFloorSubsystem
 	
 Included Files
-	Start.java- The main class of the program. Instantiates and runs all threads
+	Start.java- The main class of the program. Instantiates and runs all threads, now redundant
 	Scheduler.java- Allows communication between elevators and floors via instructions
 	ElevatorSubsystem.java- Class representing the elevators. Can send and receive instructions and read information from the input file
 	Car.java- Class used to represent individual elevator cars by the Elevator Subsystem
@@ -34,3 +33,7 @@ Credits & Contributions
 	Michael Fairbairn: JUnit Testing
 	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
 	Krishang Karir: Constructing class diagrams, sequence diagrams and state machine diagrams and documentation
+	
+Concurrency Between Iterations
+The concurrency of the system changed from having a dedicated critical section policed by a synchronized method to being several threads that only interacted with eachother through non-critical interfaces. 
+Some additional concurrency is implemented via a limiting array of booleans to control access to writing per each elevator list.
