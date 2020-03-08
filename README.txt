@@ -18,8 +18,8 @@ Tests
 	and TestElevator test classes. 
 	
 Included Files
-	Start.java- Legacy code to start the application
-	Scheduler.java- The main control class of the system
+	Start.java- The main class of the program. Instantiates and runs all threads, now redundant
+	Scheduler.java- Allows communication between elevators and floors via instructions
 	ElevatorSubsystem.java- Class representing the elevators. Can send and receive instructions and read information from the input file
 	Car.java- Class used to represent individual elevator cars by the Elevator Subsystem
 	FloorSubsystem.java- Class representing individual floors. Can send and receive instructions and read information from the input file
@@ -32,8 +32,12 @@ Included Files
 	Remaining files - There are 2 draw.io files, and 2 png files as a backup for the diagrams
 	
 Credits & Contributions
-	Khalil Aalab: UDP Connections, readingInput from Elevator and Floor, 
-	Abdelrahman Darwish:  readInputFile method() to read input from .txt file
+	Khalil Aalab: Implementation of state machine, organizing files in project
+	Abdelrahman Darwish:  readInputFile method() for ElevatorSubsyem and FloorSubsystem, UDP Communication between Subsystems
 	Michael Fairbairn: JUnit Testing
 	Jonas Hurlen: README, Scheduler communication & logic (algorithm), Elevator framework
 	Krishang Karir: Constructing class diagrams, sequence diagrams and state machine diagrams and documentation
+	
+Concurrency Between Iterations
+The concurrency of the system changed from having a dedicated critical section policed by a synchronized method to being several threads that only interacted with eachother through non-critical interfaces. 
+Some additional concurrency is implemented via a limiting array of booleans to control access to writing per each elevator list.
