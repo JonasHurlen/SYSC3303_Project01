@@ -95,7 +95,7 @@ public class FloorSubsystem implements Runnable {
 	}
 
 	public void startReading() {
-		int numberOfLines = 1;
+		int numberOfLines = 4;
 		Instruction inst;
 		for (int i = 0; i < numberOfLines; i++) {
 			inst = readInputFile(i);
