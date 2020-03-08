@@ -36,7 +36,7 @@ Included Files
 	Remaining files - There are 2 draw.io files, and 2 png files as a backup for the diagrams
 	
 Credits & Contributions
-	Khalil Aalab: Assisting with reading input, as well as UDP, as well as debugging and integrating code
+	Khalil Aalab: Assisting with reading input, as well as UDP communication, as well as debugging and integrating code
 	Abdelrahman Darwish:  readInputFile method() for ElevatorSubsyem and FloorSubsystem, UDP Communication between Subsystems
 	Michael Fairbairn: JUnit Testing
 	Jonas Hurlen: README, Scheduler communication & logic (algorithm), Elevator framework
