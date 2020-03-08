@@ -354,5 +354,10 @@ public class ElevatorSubsystem implements Runnable {
 		}
 
 	}
+	public static void main(String args[]) {
+		ElevatorSubsystem e = new ElevatorSubsystem();
+		Thread elevator = new Thread(e);
+		elevator.start();
+	}
 }
 
