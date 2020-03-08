@@ -29,7 +29,7 @@ Included Files
 	
 Credits & Contributions
 	Khalil Aalab: Implementation of state machine, organizing files in project
-	Abdelrahman Darwish:  readInputFile method() to read input from CSV file
+	Abdelrahman Darwish:  readInputFile method() for ElevatorSubsyem and FloorSubsystem, UDP Communication between Subsystems
 	Michael Fairbairn: JUnit Testing
 	Jonas Hurlen: README, Scheduler communication & logic, Elevator framework
 	Krishang Karir: Constructing class diagrams, sequence diagrams and state machine diagrams and documentation
