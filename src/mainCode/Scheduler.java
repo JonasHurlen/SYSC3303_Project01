@@ -66,7 +66,7 @@ public class Scheduler implements Runnable {
 		try {
 			sendSocket = new DatagramSocket();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		SchedulerReadFloor fReader = new SchedulerReadFloor(this);
@@ -104,7 +104,7 @@ public class Scheduler implements Runnable {
 	@Override
 	public void run() {
 
-		// TODO Auto-generated method stub
+		
 		synchronized (this) {
 			while (true) {
 				// while there are no pending instructions
@@ -115,7 +115,7 @@ public class Scheduler implements Runnable {
 						state = SchedulerState.BLOCKED;
 						this.wait();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 					//this.readFromFloor();

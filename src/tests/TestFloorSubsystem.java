@@ -12,7 +12,7 @@ class TestFloorSubsystem {
 	
 	@BeforeEach
 	void setup() {
-		floor = new FloorSubsystem(null);
+		floor = new FloorSubsystem();
 	}
 	
 

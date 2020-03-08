@@ -17,7 +17,7 @@ public class ElevatorRead implements Runnable {
 		 try {
 			receiveSocket= new DatagramSocket(38594);
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}

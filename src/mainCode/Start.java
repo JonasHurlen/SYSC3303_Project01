@@ -1,6 +1,13 @@
 package mainCode;
+
 //Legacy code!!!!
+// Note that this is no longer how we run our program
+// For information about how we run our program, 
+// refer to our readMe.txt
+
+
 public class Start {
+	/*
 	public static void main(String[] args) {
 
 		Scheduler scheduler = new Scheduler();
@@ -18,4 +25,5 @@ public class Start {
 		tFloor.start();
 
 	}
+	*/
 }

@@ -12,16 +12,17 @@ class TestElevator {
 	
 	@BeforeEach
 	void setup() {
-		subsystem = new ElevatorSubsystem(null);
+		subsystem = new ElevatorSubsystem();
 	}
 	
 	@Test
 	void testCarNumber() {
-		assertEquals(subsystem.getCarNum(), 1);
+		
 	}
 	
 	@Test
 	void testCarsDefault() {
 		assertEquals(subsystem.getCar(0).getId(), 0);
+		assertEquals(subsystem.getCarNum(), 1);
 	}
 }
